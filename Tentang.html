@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tentang LaporUnimus</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+    }
+
+    /* Bagian Header Video */
+    .tentang-laporunimus {
+      background: linear-gradient(180deg, #007e6a 0%, #006857 50%, #ffffff 100%);
+      color: white;
+      text-align: center;
+      padding: 60px 20px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tentang-laporunimus::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23ffffff" fill-opacity="1" d="M0,256L40,250.7C80,245,160,235,240,229.3C320,224,400,224,480,213.3C560,203,640,181,720,176C800,171,880,181,960,197.3C1040,213,1120,235,1200,234.7C1280,235,1360,213,1400,202.7L1440,192L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"/></svg>') no-repeat;
+      background-size: cover;
+      z-index: 1;
+    }
+
+    .content-container {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .judul {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .garis-putih {
+      width: 60px;
+      height: 4px;
+      background-color: white;
+      margin: 0 auto 30px;
+    }
+
+    .video-container {
+      margin-bottom: 30px;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      max-width: 560px;
+      height: 315px;
+      border-radius: 12px;
+    }
+
+    /* Bagian Hero Konten */
+    .hero {
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1, .hero h2 {
+      color: #007e6a;
+    }
+
+    .hero ul {
+      padding-left: 20px;
+    }
+
+    .hero li {
+      margin-bottom: 10px;
+    }
+
+    .hero strong {
+      color: #007e6a;
+    }
+
+    .hero em {
+      color: #006857;
+    }
+
+    @media (max-width: 600px) {
+      .judul {
+        font-size: 28px;
+      }
+
+      .video-container iframe {
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bagian Video & Penjelasan Singkat -->
+  <section class="tentang-laporunimus">
+    <div class="content-container">
+      <h1 class="judul">Apa Itu LaporUnimus?</h1>
+      <div class="garis-putih"></div>
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/your-video-id"
+                title="Video LaporUnimus" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <p class="deskripsi">
+        LaporUnimus adalah platform pengaduan satu pintu yang dikembangkan untuk memudahkan mahasiswa dan civitas akademika Universitas Muhammadiyah Semarang dalam menyampaikan laporan mengenai fasilitas, layanan, maupun saran pembangunan kampus. Dengan sistem yang transparan, cepat, dan terintegrasi, LaporUnimus memastikan laporan yang masuk diteruskan langsung ke unit yang berwenang tanpa birokrasi yang berbelit.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bagian Konten Utama -->
+  <section class="hero" id="tentang">
+    <h1>Tentang LaporUnimus</h1>
+    <p>
+      Pengelolaan pengaduan fasilitas dan layanan publik di lingkungan Universitas Muhammadiyah Semarang sebelumnya masih belum terkoordinasi dengan baik. Mahasiswa seringkali bingung harus melapor ke mana, dan laporan yang masuk kerap tidak ditindaklanjuti dengan jelas. Untuk menjawab kebutuhan tersebut, hadir <strong>LaporUnimus</strong> — sebuah platform pengaduan satu pintu berbasis digital.
+    </p>
+    <p>
+      LaporUnimus bertujuan menciptakan sistem pengelolaan pengaduan kampus yang terintegrasi, transparan, dan responsif. Mahasiswa dapat menyampaikan keluhan atau saran melalui satu saluran yang jelas, dan laporan akan diteruskan kepada unit terkait sesuai kewenangan. Dengan sistem ini, kami menerapkan prinsip <em>“no wrong desk policy”</em> di tingkat universitas, menjamin setiap laporan diterima dan ditangani oleh pihak yang tepat.
+    </p>
+    <p>
+      Platform ini dikelola oleh tim mahasiswa yang berkolaborasi dengan pihak birokrasi kampus. Akses LaporUnimus dapat dilakukan melalui web, aplikasi mobile, serta kanal media sosial resmi.
+    </p>
+
+    <h2>Fitur-Fitur Unggulan</h2>
+    <ul>
+      <li><strong>Anonim:</strong> Laporan dapat dikirim secara anonim tanpa menampilkan identitas pelapor.</li>
+      <li><strong>Rahasia:</strong> Isi laporan dapat dibuat rahasia agar tidak terlihat publik.</li>
+      <li><strong>Tracking ID:</strong> Setiap laporan mendapatkan ID unik untuk memantau proses tindak lanjut.</li>
+    </ul>
+
+    <h2>Tujuan LaporUnimus</h2>
+    <ul>
+      <li>Mempermudah mahasiswa menyampaikan aspirasi, kritik, dan saran.</li>
+      <li>Meningkatkan partisipasi civitas akademika dalam membangun lingkungan kampus yang lebih baik.</li>
+      <li>Mewujudkan tata kelola kampus yang terbuka, responsif, dan berorientasi pada pelayanan.</li>
+    </ul>
+
+    <h2>Statistik Singkat (Per April 2025)</h2>
+    <p>
+      Total pengguna terdaftar: <strong>5.632 mahasiswa</strong><br/>
+      Total laporan masuk: <strong>1.204 laporan</strong><br/>
+      Rata-rata waktu tindak lanjut: <strong>3 hari kerja</strong><br/>
+      Sumber laporan terbanyak: <em>Website (72%)</em>, disusul aplikasi mobile dan sosial media.
+    </p>
+
+    <h2>Versi dan Pengembangan</h2>
+    <ul>
+      <li><strong>LaporUnimus 1.0 (Januari 2025):</strong> Peluncuran awal, laporan via web.</li>
+      <li><strong>LaporUnimus 1.1 (Maret 2025):</strong> Penambahan fitur anonim dan tracking ID.</li>
+      <li><strong>LaporUnimus 1.2 (April 2025):</strong> Integrasi notifikasi email dan pelacakan status laporan.</li>
+    </ul>
+
+    <p>
+      LaporUnimus akan terus dikembangkan untuk menjawab kebutuhan kampus secara adaptif. Versi mendatang akan dilengkapi dengan fitur berbasis AI untuk klasifikasi otomatis laporan serta sistem dashboard untuk transparansi publik.
+    </p>
+  </section>
+
+</body>
+</html>
