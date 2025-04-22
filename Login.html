@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,7 +58,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="login-container">
     <h2>Login LaporUnimus</h2>
@@ -76,15 +74,13 @@
       const nama = document.getElementById('nama').value;
       const nim = document.getElementById('nim').value;
 
-      if (nama && nim) {
-        // Simpan nama & NIM ke localStorage (opsional)
-        localStorage.setItem('nama', nama);
-        localStorage.setItem('nim', nim);
-        // Arahkan ke halaman beranda
-        window.location.href = 'LamanAwal.html';
-      }
+      // Simpan ke localStorage
+      localStorage.setItem('nama', nama);
+      localStorage.setItem('nim', nim);
+
+      // Redirect ke laman awal
+      window.location.href = 'LamanAwal.html';
     }
   </script>
 </body>
-
 </html>
