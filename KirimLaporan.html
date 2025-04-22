@@ -10,42 +10,25 @@
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background-color: #f5f9f8;
+            background: linear-gradient(to bottom, #007e6a, #ffffff);
             color: #333;
-        }
-
-        header {
-            background-color: #007e6a;
-            color: white;
-            padding: 1rem 2rem;
-            text-align: center;
-        }
-
-        nav {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        nav a {
-            margin: 0 1rem;
-            color: #007e6a;
-            text-decoration: none;
-            font-weight: bold;
+            min-height: 100vh;
         }
 
         .form-container {
-            max-width: 600px;
-            margin: 2rem auto;
-            background: #ffffff;
+            max-width: 700px;
+            margin: 5rem auto;
+            background: rgba(255, 255, 255, 0.85);
+            /* transparan dikit */
             padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         .form-container h2 {
             text-align: center;
             color: #007e6a;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         label {
@@ -55,14 +38,19 @@
         }
 
         input,
-        select,
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 0.8rem;
             margin-top: 0.5rem;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-family: 'Poppins', sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
         }
 
         button {
@@ -74,6 +62,7 @@
             border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
+            width: 100%;
         }
 
         footer {
@@ -81,52 +70,45 @@
             padding: 1rem;
             text-align: center;
             font-size: 0.9rem;
-            color: #777;
+            color: #ffffffb7;
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>LaporUnimus</h1>
-        <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
-    </header>
 
-    <nav>
-        <a href="LamanAwal.html">Beranda</a>
-        <a href="KirimLaporan.html">Kirim Laporan</a>
-        <a href="#status">Cek Status</a>
-        <a href="Tentang.html">Tentang</a>
-    </nav>
-
-    <div class="form-container">
-        <h2>Formulir Pengaduan</h2>
+    <section class="form-container">
+        <h2>Kirim Laporan</h2>
         <form action="#" method="post">
             <label for="nama">Nama Lengkap</label>
-            <input type="text" id="nama" name="nama" required />
+            <input type="text" id="nama" name="nama" placeholder="Nama kamu..." required />
 
-            <label for="nim">NIM</label>
-            <input type="text" id="nim" name="nim" required />
+            <label for="email">Email Unimus</label>
+            <input type="email" id="email" name="email" placeholder="email@unimus.ac.id" required />
 
             <label for="kategori">Kategori Laporan</label>
             <select id="kategori" name="kategori" required>
                 <option value="">-- Pilih Kategori --</option>
-                <option value="infrastruktur">Infrastruktur</option>
+                <option value="infrastruktur">Infrastruktur Kampus</option>
                 <option value="layanan">Layanan Akademik</option>
                 <option value="kebersihan">Kebersihan</option>
                 <option value="lainnya">Lainnya</option>
             </select>
 
-            <label for="laporan">Isi Laporan</label>
-            <textarea id="laporan" name="laporan" rows="5" required></textarea>
+            <label for="deskripsi">Deskripsi Laporan</label>
+            <textarea id="deskripsi" name="deskripsi" placeholder="Ceritakan masalahnya di sini..." required></textarea>
 
-            <button type="submit">Kirim</button>
+            <label for="gambar">Upload Gambar (Opsional)</label>
+            <input type="file" id="gambar" name="gambar" accept="image/*" />
+
+            <button type="submit">Kirim Laporan</button>
         </form>
-    </div>
+    </section>
 
     <footer>
         &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
     </footer>
+
 </body>
 
 </html>

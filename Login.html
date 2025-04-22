@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - LaporUnimus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #007e6a, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #007e6a;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .btn-login {
+      width: 100%;
+      background-color: #007e6a;
+      color: white;
+      border: none;
+      padding: 0.9rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .btn-login:hover {
+      background-color: #005f52;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2>Login LaporUnimus</h2>
+    <form onsubmit="return handleLogin(event)">
+      <input type="text" id="nama" placeholder="Nama Lengkap" required />
+      <input type="text" id="nim" placeholder="NIM" required />
+      <button type="submit" class="btn-login">Login</button>
+    </form>
+  </div>
+
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+      const nama = document.getElementById('nama').value;
+      const nim = document.getElementById('nim').value;
+
+      if (nama && nim) {
+        // Simpan nama & NIM ke localStorage (opsional)
+        localStorage.setItem('nama', nama);
+        localStorage.setItem('nim', nim);
+        // Arahkan ke halaman beranda
+        window.location.href = 'LamanAwal.html';
+      }
+    }
+  </script>
+</body>
+
+</html>
