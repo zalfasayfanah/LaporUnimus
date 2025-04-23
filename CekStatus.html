@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cek Status | LaporUnimus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f9f8;
+      margin: 0;
+    }
+
+    header {
+      background-color: #007e6a;
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    nav {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #007e6a;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #007e6a;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      background-color: #007e6a;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1rem;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+
+    .result {
+      margin-top: 2rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: #e6f7f4;
+      border-left: 5px solid #007e6a;
+    }
+
+    .status {
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+
+    .done { color: green; }
+    .in-progress { color: orange; }
+    .pending { color: red; }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>LaporUnimus</h1>
+    <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="#">Kirim Laporan</a>
+    <a href="CekStatus.html">Cek Status</a>
+    <a href="#">Tentang</a>
+  </nav>
+
+  <div class="container">
+    <h2>Cek Status Laporan Anda</h2>
+    <form id="statusForm">
+      <label for="kode">Masukkan Kode Laporan:</label>
+      <input type="text" id="kode" placeholder="Contoh: UNIMUS2025-001" required />
+      <button type="submit">Cek Sekarang</button>
+    </form>
+
+    <div class="result" id="hasilStatus" style="display: none;">
+      <p><strong>Jenis Laporan:</strong> <span id="jenisLaporan">Pengaduan</span></p>
+      <p><strong>Isi Laporan:</strong> <span id="isiLaporan">AC di ruang D5-201 tidak menyala.</span></p>
+      <p><strong>Status:</strong> <span id="status" class="status in-progress">Sedang diproses</span></p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
+  </footer>
+
+  <script>
+    // Simulasi data dummy
+    const laporanData = {
+      "UNIMUS2025-001": {
+        jenis: "Pengaduan",
+        isi: "AC di ruang D5-201 tidak menyala.",
+        status: "Sedang diproses"
+      },
+      "UNIMUS2025-002": {
+        jenis: "Aspirasi",
+        isi: "Usul penyediaan dispenser air minum di tiap lantai.",
+        status: "Selesai"
+      },
+      "UNIMUS2025-003": {
+        jenis: "Pengaduan",
+        isi: "Toilet lantai 3 rusak dan bau.",
+        status: "Belum diproses"
+      }
+    };
+
+    document.getElementById("statusForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const kode = document.getElementById("kode").value.trim();
+      const hasil = laporanData[kode];
+
+      if (hasil) {
+        document.getElementById("jenisLaporan").innerText = hasil.jenis;
+        document.getElementById("isiLaporan").innerText = hasil.isi;
+
+        const statusEl = document.getElementById("status");
+        statusEl.innerText = hasil.status;
+
+        // Tambahkan class berdasarkan status
+        statusEl.className = "status";
+        if (hasil.status === "Selesai") statusEl.classList.add("done");
+        else if (hasil.status === "Sedang diproses") statusEl.classList.add("in-progress");
+        else statusEl.classList.add("pending");
+
+        document.getElementById("hasilStatus").style.display = "block";
+      } else {
+        alert("Kode laporan tidak ditemukan. Pastikan kode sudah benar.");
+        document.getElementById("hasilStatus").style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
