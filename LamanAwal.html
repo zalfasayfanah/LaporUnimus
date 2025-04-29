@@ -17,8 +17,30 @@
     header {
       background-color: #007e6a;
       color: white;
-      padding: 1rem 2rem;
+      padding: 3rem 2rem;
       text-align: center;
+      position: relative;
+    }
+
+    .logo {
+      position: absolute;
+      top: -1.4rem;
+      left: 3rem;
+      height: 230px;
+    }
+
+    .header-container {
+      text-align: center;
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 1rem;
     }
 
     nav {
@@ -65,6 +87,52 @@
       text-decoration: none;
     }
 
+    .statistik {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+
+    .statistik .box {
+      background-color: #ffffff;
+      border: 1px solid #cdeae3;
+      border-radius: 10px;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      min-width: 150px;
+    }
+
+    .alur-lapor {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .alur-lapor h3 {
+      color: #007e6a;
+    }
+
+    .langkah {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .testimoni {
+      margin-top: 3rem;
+      padding: 1rem 2rem;
+      background-color: #e5f6f3;
+      border-left: 5px solid #007e6a;
+      font-style: italic;
+      max-width: 600px;
+      text-align: center;
+    }
+
     footer {
       margin-top: 3rem;
       padding: 1rem;
@@ -78,10 +146,8 @@
 <body>
 
   <script>
-    // Cek apakah sudah login
     const nama = localStorage.getItem('nama');
     const nim = localStorage.getItem('nim');
-
     if (!nama || !nim) {
       alert("Silakan login terlebih dahulu.");
       window.location.href = "Login.html";
@@ -89,8 +155,13 @@
   </script>
 
   <header>
-    <h1>LaporUnimus</h1>
-    <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+    <div class="header-container">
+      <img src="Logo2.png" alt="Logo Lapor Unimus" class="logo" />
+      <div class="header-text">
+        <h1>LaporUnimus</h1>
+        <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+      </div>
+    </div>
   </header>
 
   <nav>
@@ -107,6 +178,34 @@
       Laporkan keluhanmu dengan mudah, aman, dan transparan – demi kenyamanan bersama!
     </p>
     <a href="KirimLaporan.html" class="btn-lapor">Kirim Laporan</a>
+
+    <div class="statistik">
+      <div class="box">
+        <h2>124</h2>
+        <p>Total Laporan</p>
+      </div>
+      <div class="box">
+        <h2>90</h2>
+        <p>Selesai Diproses</p>
+      </div>
+      <div class="box">
+        <h2>34</h2>
+        <p>Menunggu Tindak Lanjut</p>
+      </div>
+    </div>
+
+    <div class="alur-lapor">
+      <h3>Bagaimana Cara Melapor?</h3>
+      <div class="langkah">
+        <div>📝<br>Kirim Laporan</div>
+        <div>🔄<br>Diproses</div>
+        <div>✅<br>Selesai</div>
+      </div>
+    </div>
+
+    <div class="testimoni">
+      <p><strong>“LaporUnimus sangat membantu. Keluhan saya langsung ditindak!”</strong><br>- Dina, Mahasiswa Unimus</p>
+    </div>
   </section>
 
   <footer>
@@ -114,7 +213,6 @@
   </footer>
 
   <script>
-    // Tampilkan nama pengguna
     document.getElementById('nama-user').textContent = nama;
   </script>
 </body>

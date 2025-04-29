@@ -15,8 +15,28 @@
     header {
       background-color: #007e6a;
       color: white;
-      padding: 1.5rem 2rem;
+      padding: 3rem 2rem;
       text-align: center;
+    }
+    .logo {
+      position: absolute;
+      top: -1.4rem;
+      left: 3rem;
+      height: 230px;
+    }
+
+    .header-container {
+      text-align: center;
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 1rem;
     }
 
     nav {
@@ -99,15 +119,20 @@
 </head>
 <body>
   <header>
-    <h1>LaporUnimus</h1>
-    <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+    <div class="header-container">
+      <img src="Logo2.png" alt="Logo Lapor Unimus" class="logo" />
+      <div class="header-text">
+        <h1>LaporUnimus</h1>
+        <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+      </div>
+    </div>
   </header>
 
   <nav>
-    <a href="index.html">Beranda</a>
-    <a href="#">Kirim Laporan</a>
+    <a href="LamanAwal.html">Beranda</a>
+    <a href="KirimLaporan.html">Kirim Laporan</a>
     <a href="CekStatus.html">Cek Status</a>
-    <a href="#">Tentang</a>
+    <a href="Tentang.html">Tentang</a>
   </nav>
 
   <div class="container">
