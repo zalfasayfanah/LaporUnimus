@@ -1,84 +1,89 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tentang LaporUnimus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
   <style>
+    /* Animasi fade-in untuk seluruh halaman */
+    @keyframes fadeInPage {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      line-height: 1.6;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f9f8;
       color: #333;
-      background-color: #fff;
+      animation: fadeInPage 1s ease-out;
     }
 
-    /* Bagian Header Video */
-    .tentang-laporunimus {
-      background: linear-gradient(180deg, #007e6a 0%, #006857 50%, #ffffff 100%);
+    header {
+      background-color: #007e6a;
       color: white;
+      padding: 3rem 2rem;
       text-align: center;
-      padding: 60px 20px 100px;
       position: relative;
-      overflow: hidden;
     }
 
-    .tentang-laporunimus::after {
-      content: '';
-      display: block;
+    .logo {
       position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 100px;
-      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23ffffff" fill-opacity="1" d="M0,256L40,250.7C80,245,160,235,240,229.3C320,224,400,224,480,213.3C560,203,640,181,720,176C800,171,880,181,960,197.3C1040,213,1120,235,1200,234.7C1280,235,1360,213,1400,202.7L1440,192L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"/></svg>') no-repeat;
-      background-size: cover;
-      z-index: 1;
+      top: -1.4rem;
+      left: 3rem;
+      height: 230px;
     }
 
-    .content-container {
-      position: relative;
-      z-index: 2;
-      max-width: 800px;
-      margin: 0 auto;
+    .header-container {
+      text-align: center;
     }
 
-    .judul {
-      font-size: 36px;
+    .header-text h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    nav {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      color: #007e6a;
+      text-decoration: none;
       font-weight: bold;
-      margin-bottom: 10px;
     }
 
-    .garis-putih {
-      width: 60px;
-      height: 4px;
-      background-color: white;
-      margin: 0 auto 30px;
-    }
-
-    .video-container {
-      margin-bottom: 30px;
-    }
-
-    .video-container iframe {
-      width: 100%;
-      max-width: 560px;
-      height: 315px;
-      border-radius: 12px;
-    }
-
-    /* Bagian Hero Konten */
     .hero {
-      padding: 60px 20px;
-      max-width: 800px;
-      margin: 0 auto;
+      padding: 3rem 2rem;
+      max-width: 900px;
+      margin: auto;
+      background: linear-gradient(to bottom right, #e5f6f3, #ffffff);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      text-align: justify;
     }
 
-    .hero h1, .hero h2 {
+    .hero h1,
+    .hero h2 {
       color: #007e6a;
     }
 
     .hero ul {
-      padding-left: 20px;
+      list-style: none;
+      padding-left: 0;
     }
 
     .hero li {
@@ -93,80 +98,222 @@
       color: #006857;
     }
 
-    @media (max-width: 600px) {
-      .judul {
-        font-size: 28px;
-      }
+    .video-container {
+      margin: 2rem auto;
+      text-align: center;
+    }
 
-      .video-container iframe {
-        height: 220px;
+    .video-container iframe {
+      width: 100%;
+      max-width: 700px;
+      height: 395px;
+      border-radius: 12px;
+    }
+
+    .fitur-container,
+    .tujuan-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      padding: 10px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
       }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fitur-box,
+    .tujuan-box {
+      flex: 1 1 240px;
+      max-width: 240px;
+      background-color: white;
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.6s ease forwards;
+      cursor: pointer;
+    }
+
+    .fitur-box:hover,
+    .tujuan-box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 126, 106, 0.15);
+    }
+
+    .fitur-box.active,
+    .tujuan-box.active {
+      background-color: #f0f8f6;
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 126, 106, 0.2);
+    }
+
+    .fitur-icon,
+    .tujuan-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .fitur-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #007e6a;
+      margin-bottom: 5px;
+    }
+
+    .tujuan-text {
+      font-weight: 500;
+      color: #333;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Bagian Video & Penjelasan Singkat -->
-  <section class="tentang-laporunimus">
-    <div class="content-container">
-      <h1 class="judul">Apa Itu LaporUnimus?</h1>
-      <div class="garis-putih"></div>
-      <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/your-video-id"
-                title="Video LaporUnimus" frameborder="0" allowfullscreen></iframe>
+  <header>
+    <div class="header-container">
+      <img src="Logo2.png" alt="Logo Lapor Unimus" class="logo" />
+      <div class="header-text">
+        <h1>LaporUnimus</h1>
+        <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
       </div>
-      <p class="deskripsi">
-        LaporUnimus adalah platform pengaduan satu pintu yang dikembangkan untuk memudahkan mahasiswa dan civitas akademika Universitas Muhammadiyah Semarang dalam menyampaikan laporan mengenai fasilitas, layanan, maupun saran pembangunan kampus. Dengan sistem yang transparan, cepat, dan terintegrasi, LaporUnimus memastikan laporan yang masuk diteruskan langsung ke unit yang berwenang tanpa birokrasi yang berbelit.
-      </p>
     </div>
-  </section>
+  </header>
 
-  <!-- Bagian Konten Utama -->
-  <section class="hero" id="tentang">
-    <h1>Tentang LaporUnimus</h1>
+  <nav>
+    <a href="LamanAwal.html">Beranda</a>
+    <a href="KirimLaporan.html">Kirim Laporan</a>
+    <a href="CekStatus.html">Cek Status</a>
+    <a href="Tentang.html">Tentang</a>
+  </nav>
+
+  <section class="hero">
+    <h1 style="text-align: center; font-size: 2.6rem; font-weight: 700; margin-bottom: 30px;">
+      Apa Itu LaporUnimus?
+    </h1>
+
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/your-video-id" title="Video LaporUnimus" frameborder="0" allowfullscreen></iframe>
+    </div>
+
     <p>
-      Pengelolaan pengaduan fasilitas dan layanan publik di lingkungan Universitas Muhammadiyah Semarang sebelumnya masih belum terkoordinasi dengan baik. Mahasiswa seringkali bingung harus melapor ke mana, dan laporan yang masuk kerap tidak ditindaklanjuti dengan jelas. Untuk menjawab kebutuhan tersebut, hadir <strong>LaporUnimus</strong> — sebuah platform pengaduan satu pintu berbasis digital.
-    </p>
-    <p>
-      LaporUnimus bertujuan menciptakan sistem pengelolaan pengaduan kampus yang terintegrasi, transparan, dan responsif. Mahasiswa dapat menyampaikan keluhan atau saran melalui satu saluran yang jelas, dan laporan akan diteruskan kepada unit terkait sesuai kewenangan. Dengan sistem ini, kami menerapkan prinsip <em>“no wrong desk policy”</em> di tingkat universitas, menjamin setiap laporan diterima dan ditangani oleh pihak yang tepat.
-    </p>
-    <p>
-      Platform ini dikelola oleh tim mahasiswa yang berkolaborasi dengan pihak birokrasi kampus. Akses LaporUnimus dapat dilakukan melalui web, aplikasi mobile, serta kanal media sosial resmi.
+      <strong>LaporUnimus</strong> adalah platform pengaduan satu pintu yang dirancang untuk mempermudah mahasiswa dan civitas akademika Universitas Muhammadiyah Semarang dalam menyampaikan laporan, keluhan, maupun saran terkait fasilitas dan layanan kampus. Dengan pendekatan <em>transparan</em>, <em>cepat</em>, dan <em>terintegrasi</em>, setiap laporan akan diteruskan langsung ke unit berwenang tanpa proses birokrasi yang berbelit.
     </p>
 
-    <h2>Fitur-Fitur Unggulan</h2>
-    <ul>
-      <li><strong>Anonim:</strong> Laporan dapat dikirim secara anonim tanpa menampilkan identitas pelapor.</li>
-      <li><strong>Rahasia:</strong> Isi laporan dapat dibuat rahasia agar tidak terlihat publik.</li>
-      <li><strong>Tracking ID:</strong> Setiap laporan mendapatkan ID unik untuk memantau proses tindak lanjut.</li>
-    </ul>
+    <h2>Tentang LaporUnimus</h2>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-bottom: 20px;">
+      <img src="gedung rt unimus.jpeg" alt="Gedung Rektorat UNIMUS"
+        style="max-width: 400px; width: 100%; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+      <p style="flex: 1; text-align: justify;">
+        Dengan sistem yang lebih terbuka dan kolaboratif, <strong>LaporUnimus</strong> mendorong komunikasi dua arah
+        antara mahasiswa dan pengelola kampus. Setiap laporan diteruskan ke unit terkait secara efisien, tanpa
+        hambatan birokrasi. Platform ini menjadi sarana utama dalam membentuk lingkungan kampus yang lebih responsif
+        terhadap kebutuhan mahasiswa.
+      </p>
+    </div>    
 
-    <h2>Tujuan LaporUnimus</h2>
-    <ul>
-      <li>Mempermudah mahasiswa menyampaikan aspirasi, kritik, dan saran.</li>
-      <li>Meningkatkan partisipasi civitas akademika dalam membangun lingkungan kampus yang lebih baik.</li>
-      <li>Mewujudkan tata kelola kampus yang terbuka, responsif, dan berorientasi pada pelayanan.</li>
-    </ul>
+    <p>
+      Platform ini menjamin setiap laporan diterima dan ditangani secara tepat melalui prinsip <em>"no wrong desk policy"</em>. Dikelola oleh tim mahasiswa bersama birokrasi kampus, LaporUnimus dapat diakses melalui website, aplikasi mobile, dan kanal media sosial resmi.
+    </p>
+
+    <h2 style="color: #007e6a; margin-top: 40px; text-align: center;">Fitur-Fitur Unggulan</h2>
+    <div class="fitur-container">
+      <div class="fitur-box">
+        <div class="fitur-icon">✅</div>
+        <div class="fitur-title">Anonim</div>
+        <p>Kirim laporan tanpa harus menampilkan identitas pelapor.</p>
+      </div>
+      <div class="fitur-box">
+        <div class="fitur-icon">🔒</div>
+        <div class="fitur-title">Rahasia</div>
+        <p>Laporan bisa disetting sebagai rahasia dan tidak tampil ke publik.</p>
+      </div>
+      <div class="fitur-box">
+        <div class="fitur-icon">🆔</div>
+        <div class="fitur-title">Tracking ID</div>
+        <p>Lacak progres laporan dengan ID unik yang diberikan otomatis.</p>
+      </div>
+    </div>
+
+    <h2 style="text-align: center; color: #007e6a; margin-top: 50px;">Tujuan LaporUnimus</h2>
+    <div class="tujuan-container">
+      <div class="tujuan-box">
+        <div class="tujuan-icon">🎯</div>
+        <div class="tujuan-text">Mempermudah mahasiswa menyampaikan aspirasi, kritik, dan saran.</div>
+      </div>
+      <div class="tujuan-box">
+        <div class="tujuan-icon">🤝</div>
+        <div class="tujuan-text">Meningkatkan partisipasi civitas akademika dalam membangun kampus.</div>
+      </div>
+      <div class="tujuan-box">
+        <div class="tujuan-icon">📊</div>
+        <div class="tujuan-text">Mewujudkan tata kelola kampus yang terbuka dan responsif.</div>
+      </div>
+    </div>
+    
 
     <h2>Statistik Singkat (Per April 2025)</h2>
     <p>
-      Total pengguna terdaftar: <strong>5.632 mahasiswa</strong><br/>
-      Total laporan masuk: <strong>1.204 laporan</strong><br/>
-      Rata-rata waktu tindak lanjut: <strong>3 hari kerja</strong><br/>
-      Sumber laporan terbanyak: <em>Website (72%)</em>, disusul aplikasi mobile dan sosial media.
+      <strong>Total pengguna terdaftar:</strong> 5.632 mahasiswa<br />
+      <strong>Total laporan masuk:</strong> 1.204 laporan<br />
+      <strong>Rata-rata waktu tindak lanjut:</strong> 3 hari kerja<br />
+      <strong>Sumber laporan terbanyak:</strong> <em>Website (72%)</em>, disusul aplikasi mobile dan media sosial.
     </p>
 
     <h2>Versi dan Pengembangan</h2>
     <ul>
-      <li><strong>LaporUnimus 1.0 (Januari 2025):</strong> Peluncuran awal, laporan via web.</li>
-      <li><strong>LaporUnimus 1.1 (Maret 2025):</strong> Penambahan fitur anonim dan tracking ID.</li>
-      <li><strong>LaporUnimus 1.2 (April 2025):</strong> Integrasi notifikasi email dan pelacakan status laporan.</li>
+      <li>🛠️ <strong>LaporUnimus 1.0 (Jan 2025):</strong> Peluncuran awal untuk laporan via website.</li>
+      <li>✨ <strong>LaporUnimus 1.1 (Mar 2025):</strong> Penambahan fitur laporan anonim dan sistem ID pelacakan.</li>
+      <li>📩 <strong>LaporUnimus 1.2 (Apr 2025):</strong> Integrasi notifikasi email & pelacakan status laporan secara real-time.</li>
     </ul>
 
     <p>
-      LaporUnimus akan terus dikembangkan untuk menjawab kebutuhan kampus secara adaptif. Versi mendatang akan dilengkapi dengan fitur berbasis AI untuk klasifikasi otomatis laporan serta sistem dashboard untuk transparansi publik.
+      Ke depan, <strong>LaporUnimus</strong> akan terus berkembang. Fitur berbasis AI seperti klasifikasi otomatis dan dasbor transparansi publik tengah disiapkan demi menjawab kebutuhan kampus secara adaptif.
     </p>
   </section>
 
+  <footer>
+    &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
+  </footer>
+
+  <script>
+    // Menambahkan interaktivitas saat fitur atau tujuan diklik
+    document.querySelectorAll('.fitur-box, .tujuan-box').forEach(item => {
+      item.addEventListener('click', () => {
+        // Menghilangkan class 'active' pada semua elemen
+        document.querySelectorAll('.fitur-box, .tujuan-box').forEach(box => {
+          box.classList.remove('active');
+        });
+        // Menambahkan class 'active' pada elemen yang diklik
+        item.classList.add('active');
+      });
+    });
+  </script>
+
 </body>
+
 </html>
