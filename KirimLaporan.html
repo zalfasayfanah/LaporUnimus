@@ -10,16 +10,56 @@
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to bottom, #007e6a, #ffffff);
+            background-color: #ffffff;
             color: #333;
-            min-height: 100vh;
+        }
+
+        header {
+            background-color: #007e6a;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: -1.4rem;
+            left: 3rem;
+            height: 230px;
+        }
+
+        .header-container {
+            text-align: center;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .header-text p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        nav {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        nav a {
+            margin: 0 1rem;
+            color: #007e6a;
+            text-decoration: none;
+            font-weight: bold;
         }
 
         .form-container {
             max-width: 700px;
             margin: 5rem auto;
-            background: rgba(255, 255, 255, 0.85);
-            /* transparan dikit */
+            background: #e6f4f1;
+            /* hijau muda pudar */
             padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -70,12 +110,29 @@
             padding: 1rem;
             text-align: center;
             font-size: 0.9rem;
-            color: #ffffffb7;
+            color: #777;
         }
     </style>
 </head>
 
 <body>
+
+    <header>
+        <div class="header-container">
+            <img src="Logo2.png" alt="Logo Lapor Unimus" class="logo" />
+            <div class="header-text">
+                <h1>LaporUnimus</h1>
+                <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="LamanAwal.html">Beranda</a>
+        <a href="KirimLaporan.html">Kirim Laporan</a>
+        <a href="CekStatus.html">Cek Status</a>
+        <a href="Tentang.html">Tentang</a>
+    </nav>
 
     <section class="form-container">
         <h2>Kirim Laporan</h2>
