@@ -18,7 +18,6 @@
       color: white;
       padding: 3rem 2rem;
       text-align: center;
-      position: relative;
     }
 
     .logo {
@@ -40,6 +39,20 @@
       font-weight: bold;
     }
 
+    .header-container {
+      text-align: center;
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 1rem;
+    }
+    
     .hero {
       display: flex;
       flex-direction: column;
@@ -61,6 +74,7 @@
     }
 
     .btn-lapor {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       margin-top: 2rem;
       background-color: #007e6a;
       color: white;
@@ -70,6 +84,12 @@
       font-size: 1rem;
       cursor: pointer;
       text-decoration: none;
+    }
+
+    .btn-lapor:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
     }
 
     .statistik {
@@ -179,6 +199,27 @@
       font-size: 0.9rem;
       color: #777;
     }
+
+    /* Efek hover untuk kotak statistik */
+  .statistik .box {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .statistik .box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
+
+  /* Efek hover untuk gambar galeri */
+  .galeri img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .galeri img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
   </style>
 </head>
 <body>
