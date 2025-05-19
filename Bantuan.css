@@ -1,0 +1,144 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f9f8;
+  margin: 0;
+}
+
+.main-header {
+  background-color: #007e6a;
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  top: -1.4rem;
+  left: 3rem;
+  height: 230px;
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.header-text p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.main-nav {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.main-nav a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: #007e6a;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.main-nav a:hover {
+  color: #005f53;
+}
+
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: #fffefa;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+  border: 2px dashed #c2f0e9;
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+h2 {
+  color: #40a18d;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  font-weight: 600;
+  position: relative;
+}
+
+h2::after {
+  content: " 💬";
+  font-size: 1.5rem;
+}
+
+.accordion {
+  border-top: 2px dashed #e3f7f3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.accordion-item {
+  border-bottom: 2px dashed #e3f7f3;
+}
+
+.accordion-header {
+  background-color: #f0fdfa;
+  cursor: pointer;
+  padding: 1.2rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #007e6a;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 8px;
+}
+
+.accordion-header:hover {
+  background-color: #d6f5ef;
+  color: #005f53;
+}
+
+.accordion-content {
+  padding: 1rem 1.2rem;
+  display: none;
+  color: #555;
+  background-color: #fdfdfd;
+  border-radius: 0 0 10px 10px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.accordion-content.show {
+  display: block;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.arrow.rotate {
+  transform: rotate(90deg);
+}
+
+footer {
+  margin-top: 4rem;
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  background-color: #f8fefc;
+  border-top: 1px solid #cceee6;
+  border-radius: 0 0 20px 20px;
+}
+
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
