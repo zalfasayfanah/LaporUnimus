@@ -89,7 +89,16 @@
       cursor: pointer;
       display: block;
       width: 100%;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 12px rgba(0, 126, 106, 0.3);
+    }
+
 
     .result {
       margin-top: 2rem;
@@ -104,6 +113,10 @@
       margin-top: 0.5rem;
     }
 
+    .container + .container {
+      margin-top: 3rem;
+    }
+
     .done { color: green; }
     .in-progress { color: orange; }
     .pending { color: red; }
@@ -115,6 +128,7 @@
       font-size: 0.9rem;
       color: #777;
     }
+    
   </style>
 </head>
 <body>
@@ -137,13 +151,14 @@
     <a href="Tentang.html">Tentang</a>
   </nav>
 
+  <!-- Kotak 1: Form Cek Status -->
   <div class="container">
     <h2>Cek Status Laporan Anda</h2>
-    <form id="statusForm">
-      <label for="kode">Masukkan Kode Laporan:</label>
-      <input type="text" id="kode" placeholder="Contoh: UNIMUS2025-001" required />
-      <button type="submit">Cek Sekarang</button>
-    </form>
+      <form id="statusForm">
+        <label for="kode">Masukkan Kode Laporan:</label>
+        <input type="text" id="kode" placeholder="Contoh: UNIMUS2025-001" required />
+        <button type="submit">Cek Sekarang</button>
+      </form>
 
     <div class="result" id="hasilStatus" style="display: none;">
       <p><strong>Jenis Laporan:</strong> <span id="jenisLaporan">Pengaduan</span></p>
@@ -151,6 +166,15 @@
       <p><strong>Status:</strong> <span id="status" class="status in-progress">Sedang diproses</span></p>
     </div>
   </div>
+
+  <!-- Kotak 2: Riwayat Laporan -->
+  <div class="container">
+    <h2>Riwayat Laporan Anda</h2>
+    <div id="riwayatLaporan">
+      <!-- Diisi otomatis oleh JavaScript -->
+    </div>
+  </div>
+
 
   <footer>
     &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
@@ -175,6 +199,66 @@
         status: "Belum diproses"
       }
     };
+    // Simulasi ID pengguna login
+    const currentUser = "mahasiswa_001";
+
+    // Simulasi riwayat berdasarkan user
+    const riwayatLaporan = {
+      "mahasiswa_001": [
+      {
+        kode: "UNIMUS2025-001",
+        jenis: "Pengaduan",
+        isi: "AC di ruang D5-201 tidak menyala.",
+        status: "Sedang diproses"
+      },
+      {
+        kode: "UNIMUS2025-003",
+        jenis: "Pengaduan",
+        isi: "Toilet lantai 3 rusak dan bau.",
+        status: "Belum diproses"
+      }
+    ],
+      "pegawai_001": [
+      {
+        kode: "UNIMUS2025-002",
+        jenis: "Aspirasi",
+        isi: "Usul penyediaan dispenser air minum di tiap lantai.",
+        status: "Selesai"
+      }
+    ]
+    };
+
+    // Fungsi tampilkan riwayat
+    function tampilkanRiwayat() {
+    const riwayat = riwayatLaporan[currentUser] || [];
+    const container = document.getElementById("riwayatLaporan");
+
+    if (riwayat.length === 0) {
+      container.innerHTML = "<p>Belum ada laporan yang dikirim.</p>";
+    return;
+    }
+
+    const listHTML = riwayat.map(laporan => `
+    <div class="result">
+      <p><strong>Kode Laporan:</strong> ${laporan.kode}</p>
+      <p><strong>Jenis:</strong> ${laporan.jenis}</p>
+      <p><strong>Isi:</strong> ${laporan.isi}</p>
+      <p><strong>Status:</strong> <span class="status ${statusClass(laporan.status)}">${laporan.status}</span></p>
+    </div>
+  `).join("");
+
+    container.innerHTML = listHTML;
+    }
+
+    // Fungsi bantu untuk kelas warna status
+    function statusClass(status) {
+      if (status === "Selesai") return "done";
+      if (status === "Sedang diproses") return "in-progress";
+    return "pending";
+    }
+
+    // Jalankan saat halaman selesai dimuat
+    window.onload = tampilkanRiwayat;
 
     document.getElementById("statusForm").addEventListener("submit", function (e) {
       e.preventDefault();
