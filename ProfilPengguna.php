@@ -20,12 +20,12 @@
   </header>
 
   <nav>
-    <a href="LamanAwal.html">Beranda</a>
-    <a href="KirimLaporan.html">Kirim Laporan</a>
-    <a href="CekStatus.html">Cek Status</a>
-    <a href="ProfilPengguna.html">Profil</a>
-    <a href="Bantuan.html">Bantuan</a>
-    <a href="Tentang.html">Tentang</a>
+    <a href="LamanAwal.php">Beranda</a>
+    <a href="KirimLaporan.php">Kirim Laporan</a>
+    <a href="CekStatus.php">Cek Status</a>
+    <a href="ProfilPengguna.php">Profil</a>
+    <a href="Bantuan.php">Bantuan</a>
+    <a href="Tentang.php">Tentang</a>
   </nav>
 
   <div class="container">

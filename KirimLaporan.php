@@ -1,3 +1,52 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $koneksi = mysqli_connect("localhost:3307", "root", "", "lapor_unimus");
+
+    if (!$koneksi) {
+        die("Koneksi gagal: " . mysqli_connect_error());
+    }
+
+    $nama = $_POST['nama'];
+    $email = $_POST['email'];
+    $kategori = $_POST['kategori'];
+    $deskripsi = $_POST['deskripsi'];
+
+    $tahun = date("Y");
+    $query = "SELECT COUNT(*) as total FROM laporan WHERE YEAR(tanggal_kirim) = '$tahun'";
+    $result = mysqli_query($koneksi, $query);
+    $data = mysqli_fetch_assoc($result);
+    $no_urut = $data['total'] + 1;
+    $kode_laporan = "UNIMUS$tahun-" . str_pad($no_urut, 3, '0', STR_PAD_LEFT);
+
+    $gambar_nama = null;
+    if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
+        $target_dir = "uploads/";
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+
+        $gambar_nama = $kode_laporan . "_" . basename($_FILES["gambar"]["name"]);
+        $target_file = $target_dir . $gambar_nama;
+        move_uploaded_file($_FILES["gambar"]["tmp_name"], $target_file);
+    }
+
+    $sql = "INSERT INTO laporan (kode_laporan, nama_lengkap, email, kategori, deskripsi, gambar)
+            VALUES ('$kode_laporan', '$nama', '$email', '$kategori', '$deskripsi', '$gambar_nama')";
+
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>
+                alert('Laporan berhasil dikirim! Kode laporan Anda: $kode_laporan');
+                window.location.href = 'CekStatus.html';
+              </script>";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($koneksi);
+    }
+
+    mysqli_close($koneksi);
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -127,17 +176,18 @@
     </header>
 
     <nav>
-        <a href="LamanAwal.html">Beranda</a>
-        <a href="KirimLaporan.html">Kirim Laporan</a>
-        <a href="CekStatus.html">Cek Status</a>
-        <a href="ProfilPengguna.html">Profil</a>
-        <a href="Bantuan.html">Bantuan</a>
-        <a href="Tentang.html">Tentang</a>
+        <a href="LamanAwal.php">Beranda</a>
+        <a href="KirimLaporan.php">Kirim Laporan</a>
+        <a href="CekStatus.php">Cek Status</a>
+        <a href="ProfilPengguna.php">Profil</a>
+        <a href="Bantuan.php">Bantuan</a>
+        <a href="Tentang.php">Tentang</a>
     </nav>
 
     <section class="form-container">
         <h2>Kirim Laporan</h2>
-        <form action="BerhasilDisimpan.html" method="post">
+        <!-- <form action="BerhasilDisimpan.html" method="post"> -->
+        <form action="proses_laporan.php" method="post" enctype="multipart/form-data">
             <label for="nama">Nama Lengkap</label>
             <input type="text" id="nama" name="nama" placeholder="Nama kamu..." required />
 
