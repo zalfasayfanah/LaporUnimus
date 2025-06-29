@@ -93,7 +93,7 @@
     <section class="success-container">
         <h2>Laporan Berhasil Dikirim!</h2>
         <p>Terima kasih telah menyampaikan laporanmu. Kami akan segera menindaklanjuti laporan tersebut.</p>
-        <a href="LamanAwal.html">Kembali ke Beranda</a>
+        <a href="LamanAwal.php">Kembali ke Beranda</a>
     </section>
 
     <footer>

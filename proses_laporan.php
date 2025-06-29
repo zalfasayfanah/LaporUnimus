@@ -8,10 +8,6 @@ $email      = $_POST['email'];
 $kategori   = $_POST['kategori'];
 $deskripsi  = $_POST['deskripsi'];
 
-// 3. Buat kode laporan unik (misal: LPR-20250608-001)
-$tanggal = date("Ymd");
-$random  = rand(100, 999);
-$kode_laporan = "LPR-" . $tanggal . "-" . $random;
 
 // 4. Proses upload gambar (jika ada)
 $nama_file = "";
@@ -36,7 +32,7 @@ $query = "INSERT INTO laporan
 
 if (mysqli_query($koneksi, $query)) {
     // 6. Redirect ke halaman sukses
-    header("Location: BerhasilDisimpan.html");
+    header("Location: BerhasilDisimpan.php");
 } else {
     echo "Gagal menyimpan laporan: " . mysqli_error($koneksi);
 }

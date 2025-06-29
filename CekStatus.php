@@ -13,8 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
     }
 }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -116,7 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
       box-shadow: 0 8px 12px rgba(0, 126, 106, 0.3);
     }
 
-
     .result {
       margin-top: 2rem;
       padding: 1rem;
@@ -145,7 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
       font-size: 0.9rem;
       color: #777;
     }
-    
   </style>
 </head>
 <body>
@@ -168,50 +164,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
       <a href="Tentang.php">Tentang</a>
   </nav>
 
-  <!-- Kotak 1: Form Cek Status -->
   <div class="container">
     <h2>Cek Status Laporan Anda</h2>
-      <form id="statusForm" method="post">
-  <label for="kode">Masukkan Kode Laporan:</label>
-  <input type="text" id="kode" name="kode" value="<?= htmlspecialchars($kodeDicari) ?>" placeholder="Contoh: UNIMUS2025-001" required />
-  <button type="submit">Cek Sekarang</button>
-</form>
+    <form id="statusForm" method="post">
+      <label for="kode">Masukkan Kode Laporan:</label>
+      <input type="text" id="kode" name="kode" value="<?= htmlspecialchars($kodeDicari) ?>" placeholder="Contoh: UNIMUS2025-001" required />
+      <button type="submit">Cek Sekarang</button>
+    </form>
+
     <?php if ($hasil): ?>
-  <div class="result">
-    <p><strong>Nama:</strong> <?= htmlspecialchars($hasil['nama_lengkap']) ?></p>
-    <p><strong>Email:</strong> <?= htmlspecialchars($hasil['email']) ?></p>
-    <p><strong>Jenis Laporan:</strong> <?= htmlspecialchars($hasil['kategori']) ?></p>
-    <p><strong>Isi Laporan:</strong> <?= htmlspecialchars($hasil['deskripsi']) ?></p>
-    <p><strong>Status:</strong> 
-      <span class="status 
-        <?= ($hasil['status'] == 'Selesai') ? 'done' : (($hasil['status'] == 'Sedang diproses') ? 'in-progress' : 'pending') ?>">
-        <?= htmlspecialchars($hasil['status']) ?>
-      </span>
-    </p>
-  </div>
-<?php elseif (!empty($kodeDicari)): ?>
-  <p style="color:red; margin-top: 1rem;">Kode laporan tidak ditemukan. Pastikan kode benar.</p>
-<?php endif; ?>
-
-
-    <div class="result" id="hasilStatus" style="display: none;">
-      <p><strong>Jenis Laporan:</strong> <span id="jenisLaporan">Pengaduan</span></p>
-      <p><strong>Isi Laporan:</strong> <span id="isiLaporan">AC di ruang D5-201 tidak menyala.</span></p>
-      <p><strong>Status:</strong> <span id="status" class="status in-progress">Sedang diproses</span></p>
-    </div>
+      <div class="result">
+        <p><strong>Nama:</strong> <?= htmlspecialchars($hasil['nama_lengkap']) ?></p>
+        <p><strong>Email:</strong> <?= htmlspecialchars($hasil['email']) ?></p>
+        <p><strong>Jenis Laporan:</strong> <?= htmlspecialchars($hasil['kategori']) ?></p>
+        <p><strong>Isi Laporan:</strong> <?= htmlspecialchars($hasil['deskripsi']) ?></p>
+        <p><strong>Status:</strong> 
+          <span class="status 
+            <?= ($hasil['status'] == 'Selesai') ? 'done' : (($hasil['status'] == 'Sedang diproses') ? 'in-progress' : 'pending') ?>">
+            <?= htmlspecialchars($hasil['status']) ?>
+          </span>
+        </p>
+      </div>
+    <?php elseif (!empty($kodeDicari)): ?>
+      <p style="color:red; margin-top: 1rem;">Kode laporan tidak ditemukan. Pastikan kode benar.</p>
+    <?php endif; ?>
   </div>
 
-  <!-- Kotak 2: Riwayat Laporan -->
   <div class="container">
     <h2>Riwayat Laporan Anda</h2>
     <div id="riwayatLaporan">
-      <!-- Diisi otomatis oleh JavaScript -->
+      <p>Memuat riwayat...</p>
     </div>
   </div>
-
 
   <footer>
     &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
   </footer>
+
+  <script>
+    function statusClass(status) {
+      if (status === "Selesai") return "done";
+      if (status === "Sedang diproses") return "in-progress";
+      return "pending";
+    }
+
+    async function tampilkanRiwayat() {
+      const nim = localStorage.getItem("nim");
+      if (!nim) {
+        document.getElementById("riwayatLaporan").innerHTML = "<p style='color:red;'>Tidak dapat mengambil NIM pengguna.</p>";
+        return;
+      }
+
+      const response = await fetch("get_riwayat.php?nim=" + nim);
+      const data = await response.json();
+
+      const container = document.getElementById("riwayatLaporan");
+
+      if (data.length === 0) {
+        container.innerHTML = "<p>Belum ada laporan yang dikirim.</p>";
+        return;
+      }
+
+      const listHTML = data.map(laporan => `
+        <div class="result">
+          <p><strong>Kode Laporan:</strong> ${laporan.kode_laporan}</p>
+          <p><strong>Jenis:</strong> ${laporan.kategori}</p>
+          <p><strong>Isi:</strong> ${laporan.deskripsi}</p>
+          <p><strong>Status:</strong> <span class="status ${statusClass(laporan.status)}">${laporan.status}</span></p>
+        </div>
+      `).join("");
+
+      container.innerHTML = listHTML;
+    }
+
+    window.onload = tampilkanRiwayat;
+  </script>
 </body>
 </html>
+
+
