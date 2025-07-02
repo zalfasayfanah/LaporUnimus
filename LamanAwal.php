@@ -1,11 +1,10 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $koneksi = mysqli_connect("localhost:3307", "root", "", "lapor_unimus");
+session_start();
 
-    if (!$koneksi) {
-        die("Koneksi gagal: " . mysqli_connect_error());
-    }
-        mysqli_close($koneksi);
+// Redirect jika belum login
+if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
+    echo "<script>alert('Silakan login terlebih dahulu.'); window.location.href = 'Login.php';</script>";
+    exit;
 }
 ?>
 
@@ -17,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>LaporUnimus</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
   <style>
+    /* ... (style tetap sama persis dengan punyamu) ... */
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -211,37 +211,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       color: #777;
     }
 
-    /* Efek hover untuk kotak statistik */
-  .statistik .box {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .statistik .box:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-  }
+    .statistik .box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+    }
 
-  /* Efek hover untuk gambar galeri */
-  .galeri img {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .galeri img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-  }
+    .galeri img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
 
   </style>
 </head>
 <body>
-  <script>
-    const nama = localStorage.getItem('nama');
-    const nim = localStorage.getItem('nim');
-    if (!nama || !nim) {
-      alert("Silakan login terlebih dahulu.");
-      window.location.href = "Login.html";
-    }
-  </script>
 
 <header>
   <div class="header-container">
@@ -262,74 +246,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <a href="Tentang.php">Tentang</a>
 </nav>
 
+<section class="hero">
+  <h1>Selamat Datang, <?php echo htmlspecialchars($_SESSION['nama']); ?>!</h1>
+  <p>LaporUnimus adalah platform pengaduan infrastruktur dan pelayanan publik di Universitas Muhammadiyah Semarang. Laporkan keluhanmu dengan mudah, aman, dan transparan – demi kenyamanan bersama!</p>
+  <a href="KirimLaporan.php" class="btn-lapor">Kirim Laporan</a>
 
-  <section class="hero">
-    <h1>Selamat Datang, <span id="nama-user"></span>!</h1>
-    <p>LaporUnimus adalah platform pengaduan infrastruktur dan pelayanan publik di Universitas Muhammadiyah Semarang. Laporkan keluhanmu dengan mudah, aman, dan transparan – demi kenyamanan bersama!</p>
-    <a href="KirimLaporan.php" class="btn-lapor">Kirim Laporan</a>
+  <div class="statistik">
+    <div class="box"><h2>124</h2><p>Total Laporan</p></div>
+    <div class="box"><h2>90</h2><p>Selesai Diproses</p></div>
+    <div class="box"><h2>34</h2><p>Menunggu Tindak Lanjut</p></div>
+  </div>
 
-    <div class="statistik">
-      <div class="box"><h2>124</h2><p>Total Laporan</p></div>
-      <div class="box"><h2>90</h2><p>Selesai Diproses</p></div>
-      <div class="box"><h2>34</h2><p>Menunggu Tindak Lanjut</p></div>
+  <div class="pengumuman">
+    <h3>📢 Pengumuman Terbaru</h3>
+    <p>Sistem LaporUnimus akan mengalami pemeliharaan pada tanggal 20 Mei 2025 pukul 21.00 – 23.00 WIB.</p>
+  </div>
+
+  <div class="kontak">
+    <h3>📞 Kontak Dukungan</h3>
+    <p>Butuh bantuan? Hubungi kami via WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
+  </div>
+
+  <div class="panduan">
+    <h3>📘 Panduan Penggunaan</h3>
+    <p>Lihat panduan lengkap cara menggunakan LaporUnimus <a href="Panduan.html">di sini</a>.</p>
+  </div>
+
+  <div class="alur-lapor">
+    <h3>Bagaimana Cara Melapor?</h3>
+    <div class="langkah">
+      <div>📝<br>Kirim Laporan</div>
+      <div>🔄<br>Diproses</div>
+      <div>✅<br>Selesai</div>
     </div>
+  </div>
 
-    <div class="pengumuman">
-      <h3>📢 Pengumuman Terbaru</h3>
-      <p>Sistem LaporUnimus akan mengalami pemeliharaan pada tanggal 20 Mei 2025 pukul 21.00 – 23.00 WIB.</p>
+  <div class="testimoni">
+    <p><strong>"LaporUnimus sangat membantu. Keluhan saya langsung ditindak!"</strong><br>- Dina, Mahasiswa Unimus</p>
+  </div>
+
+  <div class="galeri">
+    <h3>🖼️ Galeri Foto Penanganan Laporan</h3>
+    <img src="Foto 1 AC.jpeg" alt="Penanganan AC">
+    <img src="Foto 2 KM.jpeg" alt="Penanganan Kamar mandi">
+    <img src="Foto 3 Aspal.jpeg" alt="Penanganan Parkiran">
+  </div>
+
+  <div class="progress">
+    <h3>📊 Progress Penyelesaian Laporan Anda</h3>
+    <div class="progress-bar">
+      <div class="progress-fill">75%</div>
     </div>
+    <p><i>Status laporan terbaru: "Dalam tahap verifikasi oleh unit terkait"</i></p>
+  </div>
 
-    <div class="kontak">
-      <h3>📞 Kontak Dukungan</h3>
-      <p>Butuh bantuan? Hubungi kami via WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
-    </div>
+  <div class="partisipasi">
+    <h3>💪 Ayo Jadi Bagian dari Perubahan Positif!</h3>
+    <p>Mahasiswa aktif = kampus berkembang! Yuk, sampaikan aspirasimu lewat LaporUnimus dan bantu ciptakan lingkungan kampus yang lebih baik, bersih, dan nyaman untuk kita semua!</p>
+    <a href="KirimLaporan.php" class="btn-lapor" style="background-color: #fff; color: #007e6a;">Laporkan Sekarang</a>
+  </div>
+</section>
 
-    <div class="panduan">
-      <h3>📘 Panduan Penggunaan</h3>
-      <p>Lihat panduan lengkap cara menggunakan LaporUnimus <a href="Panduan.html">di sini</a>.</p>
-    </div>
+<footer>
+  &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
+</footer>
 
-    <div class="alur-lapor">
-      <h3>Bagaimana Cara Melapor?</h3>
-      <div class="langkah">
-        <div>📝<br>Kirim Laporan</div>
-        <div>🔄<br>Diproses</div>
-        <div>✅<br>Selesai</div>
-      </div>
-    </div>
-
-    <div class="testimoni">
-      <p><strong>"LaporUnimus sangat membantu. Keluhan saya langsung ditindak!"</strong><br>- Dina, Mahasiswa Unimus</p>
-    </div>
-
-    <div class="galeri">
-      <h3>🖼️ Galeri Foto Penanganan Laporan</h3>
-      <img src="Foto 1 AC.jpeg" alt="Penanganan AC">
-      <img src="Foto 2 KM.jpeg" alt="Penanganan Kamar mandi">
-      <img src="Foto 3 Aspal.jpeg" alt="Penanganan Parkiran">
-    </div>
-
-    <div class="progress">
-      <h3>📊 Progress Penyelesaian Laporan Anda</h3>
-      <div class="progress-bar">
-        <div class="progress-fill">75%</div>
-      </div>
-      <p><i>Status laporan terbaru: "Dalam tahap verifikasi oleh unit terkait"</i></p>
-    </div>
-
-    <div class="partisipasi">
-      <h3>💪 Ayo Jadi Bagian dari Perubahan Positif!</h3>
-      <p>Mahasiswa aktif = kampus berkembang! Yuk, sampaikan aspirasimu lewat LaporUnimus dan bantu ciptakan lingkungan kampus yang lebih baik, bersih, dan nyaman untuk kita semua!</p>
-      <a href="KirimLaporan.php" class="btn-lapor" style="background-color: #fff; color: #007e6a;">Laporkan Sekarang</a>
-    </div>
-  </section>
-
-  <footer>
-    &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
-  </footer>
-
-  <script>
-    document.getElementById('nama-user').textContent = nama;
-  </script>
 </body>
 </html>
