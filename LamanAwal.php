@@ -269,7 +269,8 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
 
   <div class="panduan">
     <h3>📘 Panduan Penggunaan</h3>
-    <p>Lihat panduan lengkap cara menggunakan LaporUnimus <a href="Panduan.html">di sini</a>.</p>
+    <p>Lihat panduan lengkap cara menggunakan LaporUnimus <a href="https://drive.google.com/file/d/1FS2kDK5z3saRqiDAudhyNJ3gcF5cUTRe/view?usp=sharing" target="_blank" rel="noopener noreferrer">di sini</a>.
+</p>
   </div>
 
   <div class="alur-lapor">
