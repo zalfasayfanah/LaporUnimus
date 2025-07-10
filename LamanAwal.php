@@ -1,22 +1,36 @@
 <?php
 session_start();
 
-// Redirect jika belum login
 if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
     echo "<script>alert('Silakan login terlebih dahulu.'); window.location.href = 'Login.php';</script>";
     exit;
 }
-?>
 
+require 'koneksi.php';
+
+$totalLaporan = '0';
+$laporanSelesai = '0';
+$laporanProses = '0';
+
+if ($conn && !$conn->connect_error) {
+    $queryTotal = $conn->query("SELECT COUNT(*) AS total FROM laporan");
+    if ($queryTotal) $totalLaporan = $queryTotal->fetch_assoc()['total'];
+
+    $querySelesai = $conn->query("SELECT COUNT(*) AS selesai FROM laporan WHERE status = 'Selesai'");
+    if ($querySelesai) $laporanSelesai = $querySelesai->fetch_assoc()['selesai'];
+
+    $queryProses = $conn->query("SELECT COUNT(*) AS proses FROM laporan WHERE status = 'Sedang diproses'");
+    if ($queryProses) $laporanProses = $queryProses->fetch_assoc()['proses'];
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LaporUnimus</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
   <style>
-    /* ... (style tetap sama persis dengan punyamu) ... */
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -28,14 +42,79 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
       background-color: #007e6a;
       color: white;
       padding: 3rem 2rem;
-      text-align: center;
+      position: relative;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
     }
 
     .logo {
       position: absolute;
-      top: -1.4rem;
+      top: -4.2rem;
       left: 3rem;
       height: 230px;
+    }
+
+    .header-text {
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .profile-menu {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .profile-icon {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 999;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .logout-btn {
+      background: none;
+      border: none;
+      color: #007e6a;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .logout-btn:hover {
+      background-color: #f0f0f0;
     }
 
     nav {
@@ -50,26 +129,17 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
       font-weight: bold;
     }
 
-    .header-container {
-      text-align: center;
+    main {
+      padding: 2rem;
     }
 
-    .header-text h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-
-    .header-text p {
-      margin: 0;
-      font-size: 1rem;
-    }
-    
     .hero {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 3rem 2rem;
       background: linear-gradient(to bottom right, #e5f6f3, #ffffff);
+      padding: 2rem;
+      border-radius: 10px;
     }
 
     .hero h1 {
@@ -85,7 +155,6 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
     }
 
     .btn-lapor {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
       margin-top: 2rem;
       background-color: #007e6a;
       color: white;
@@ -95,12 +164,12 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
       font-size: 1rem;
       cursor: pointer;
       text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .btn-lapor:hover {
       transform: scale(1.05);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
     }
 
     .statistik {
@@ -108,8 +177,8 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
       justify-content: center;
       gap: 2rem;
       margin-top: 2rem;
-      text-align: center;
       flex-wrap: wrap;
+      text-align: center;
     }
 
     .statistik .box {
@@ -121,86 +190,40 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
       min-width: 150px;
     }
 
-    .pengumuman, .kontak, .panduan, .partisipasi {
+    .statistik .box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+    }
+
+    .pengumuman, .kontak, .panduan, .alur-lapor, .testimoni, .progress, .partisipasi {
       margin-top: 2rem;
       text-align: center;
-      max-width: 700px;
-    }
-
-    .alur-lapor {
-      text-align: center;
-      margin-top: 3rem;
-    }
-
-    .alur-lapor h3 {
-      color: #007e6a;
     }
 
     .langkah {
       display: flex;
-      justify-content: center;
-      gap: 3rem;
-      font-size: 1.2rem;
+      justify-content: space-around;
       margin-top: 1rem;
-      flex-wrap: wrap;
     }
 
-    .testimoni {
-      margin-top: 3rem;
-      padding: 1rem 2rem;
-      background-color: #e5f6f3;
-      border-left: 5px solid #007e6a;
-      font-style: italic;
-      max-width: 600px;
-      text-align: center;
-    }
-
-    .galeri {
-      margin-top: 3rem;
-      text-align: center;
-    }
-
-    .galeri img {
-      width: 250px;
-      margin: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .progress {
-      margin-top: 3rem;
+    .langkah div {
       text-align: center;
     }
 
     .progress-bar {
-      width: 80%;
+      width: 100%;
       background-color: #ddd;
       border-radius: 20px;
-      margin: auto;
       overflow: hidden;
-      margin-top: 1rem;
     }
 
     .progress-fill {
-      height: 20px;
       width: 75%;
       background-color: #007e6a;
       color: white;
       text-align: center;
-      line-height: 20px;
-      border-radius: 20px;
-    }
-
-    .partisipasi {
-      background-color: #007e6a;
-      color: white;
-      padding: 2rem;
-      border-radius: 10px;
-      margin-top: 3rem;
-    }
-
-    .partisipasi h3 {
-      margin-top: 0;
+      padding: 0.5rem;
     }
 
     footer {
@@ -210,34 +233,29 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
       font-size: 0.9rem;
       color: #777;
     }
-
-    .statistik .box:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-    }
-
-    .galeri img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-    }
-
   </style>
 </head>
 <body>
 
-<header>
+<header class="main-header">
   <div class="header-container">
     <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
     <div class="header-text">
       <h1>LaporUnimus</h1>
       <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
     </div>
+    <div class="profile-menu">
+      <img src="profil.png" alt="Profil" class="profile-icon" id="profileIcon" />
+      <div class="dropdown" id="dropdownMenu">
+        <form action="Logout.php" method="post" style="margin: 0;">
+          <button type="submit" class="logout-btn">Logout</button>
+        </form>
+      </div>
+    </div>
   </div>
 </header>
 
-<nav>
+<nav class="main-nav">
   <a href="LamanAwal.php">Beranda</a>
   <a href="KirimLaporan.php">Kirim Laporan</a>
   <a href="CekStatus.php">Cek Status</a>
@@ -246,15 +264,16 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
   <a href="Tentang.php">Tentang</a>
 </nav>
 
+<main>
 <section class="hero">
   <h1>Selamat Datang, <?php echo htmlspecialchars($_SESSION['nama']); ?>!</h1>
   <p>LaporUnimus adalah platform pengaduan infrastruktur dan pelayanan publik di Universitas Muhammadiyah Semarang. Laporkan keluhanmu dengan mudah, aman, dan transparan – demi kenyamanan bersama!</p>
   <a href="KirimLaporan.php" class="btn-lapor">Kirim Laporan</a>
 
   <div class="statistik">
-    <div class="box"><h2>124</h2><p>Total Laporan</p></div>
-    <div class="box"><h2>90</h2><p>Selesai Diproses</p></div>
-    <div class="box"><h2>34</h2><p>Menunggu Tindak Lanjut</p></div>
+    <div class="box"><h2><?php echo $totalLaporan; ?></h2><p>Total Laporan</p></div>
+    <div class="box"><h2><?php echo $laporanSelesai; ?></h2><p>Selesai Diproses</p></div>
+    <div class="box"><h2><?php echo $laporanProses; ?></h2><p>Menunggu Tindak Lanjut</p></div>
   </div>
 
   <div class="pengumuman">
@@ -269,8 +288,7 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
 
   <div class="panduan">
     <h3>📘 Panduan Penggunaan</h3>
-    <p>Lihat panduan lengkap cara menggunakan LaporUnimus <a href="https://drive.google.com/file/d/1FS2kDK5z3saRqiDAudhyNJ3gcF5cUTRe/view?usp=sharing" target="_blank" rel="noopener noreferrer">di sini</a>.
-</p>
+    <p>Lihat panduan lengkap cara menggunakan LaporUnimus <a href="https://drive.google.com/file/d/1FS2kDK5z3saRqiDAudhyNJ3gcF5cUTRe/view?usp=sharing" target="_blank" rel="noopener noreferrer">di sini</a>.</p>
   </div>
 
   <div class="alur-lapor">
@@ -284,13 +302,6 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
 
   <div class="testimoni">
     <p><strong>"LaporUnimus sangat membantu. Keluhan saya langsung ditindak!"</strong><br>- Dina, Mahasiswa Unimus</p>
-  </div>
-
-  <div class="galeri">
-    <h3>🖼️ Galeri Foto Penanganan Laporan</h3>
-    <img src="Foto 1 AC.jpeg" alt="Penanganan AC">
-    <img src="Foto 2 KM.jpeg" alt="Penanganan Kamar mandi">
-    <img src="Foto 3 Aspal.jpeg" alt="Penanganan Parkiran">
   </div>
 
   <div class="progress">
@@ -307,10 +318,26 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
     <a href="KirimLaporan.php" class="btn-lapor" style="background-color: #fff; color: #007e6a;">Laporkan Sekarang</a>
   </div>
 </section>
+</main>
 
 <footer>
   &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
 </footer>
+
+<script>
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+  profileIcon.addEventListener('click', () => {
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!profileIcon.contains(event.target) && !dropdownMenu.contains(event.target)) {
+      dropdownMenu.style.display = 'none';
+    }
+  });
+</script>
 
 </body>
 </html>

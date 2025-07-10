@@ -1,6 +1,6 @@
 <?php
 // 1. Koneksi ke database
-$koneksi = mysqli_connect("localhost:3307", "root", "", "lapor_unimus");
+$koneksi = mysqli_connect("localhost", "root", "", "lapor_unimus");
 
 // 2. Ambil data dari form
 $nama       = $_POST['nama'];

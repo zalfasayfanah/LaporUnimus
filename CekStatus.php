@@ -1,5 +1,12 @@
 <?php
-$koneksi = mysqli_connect("localhost:3307", "root", "", "lapor_unimus");
+session_start();
+
+if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
+    echo "<script>alert('Silakan login terlebih dahulu.'); window.location.href = 'Login.php';</script>";
+    exit;
+}
+
+$koneksi = mysqli_connect("localhost", "root", "", "lapor_unimus");
 
 $hasil = null;
 $kodeDicari = '';
@@ -31,17 +38,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
       background-color: #007e6a;
       color: white;
       padding: 3rem 2rem;
-      text-align: center;
+      position: relative;
     }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
     .logo {
       position: absolute;
-      top: -1.4rem;
+      top: -4.2rem;
       left: 3rem;
       height: 230px;
     }
 
-    .header-container {
+    .header-text {
       text-align: center;
+      flex-grow: 1;
     }
 
     .header-text h1 {
@@ -52,6 +68,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
     .header-text p {
       margin: 0;
       font-size: 1rem;
+    }
+
+    .profile-menu {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .profile-icon {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 999;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007e6a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #f0f0f0;
     }
 
     nav {
@@ -145,101 +200,120 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
   </style>
 </head>
 <body>
-  <header>
-    <div class="header-container">
-      <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
-      <div class="header-text">
-        <h1>LaporUnimus</h1>
-        <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+
+<header>
+  <div class="header-container">
+    <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
+    <div class="header-text">
+      <h1>LaporUnimus</h1>
+      <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+    </div>
+    <div class="profile-menu">
+      <img src="profil.png" alt="Profil" class="profile-icon" onclick="toggleDropdown()" />
+      <div class="dropdown" id="dropdownMenu">
+        <a href="Logout.php">Logout</a>
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <nav>
-      <a href="LamanAwal.php">Beranda</a>
-      <a href="KirimLaporan.php">Kirim Laporan</a>
-      <a href="CekStatus.php">Cek Status</a>
-      <a href="ProfilPengguna.php">Profil</a>
-      <a href="Bantuan.php">Bantuan</a>
-      <a href="Tentang.php">Tentang</a>
-  </nav>
+<nav>
+  <a href="LamanAwal.php">Beranda</a>
+  <a href="KirimLaporan.php">Kirim Laporan</a>
+  <a href="CekStatus.php">Cek Status</a>
+  <a href="ProfilPengguna.php">Profil</a>
+  <a href="Bantuan.php">Bantuan</a>
+  <a href="Tentang.php">Tentang</a>
+</nav>
 
-  <div class="container">
-    <h2>Cek Status Laporan Anda</h2>
-    <form id="statusForm" method="post">
-      <label for="kode">Masukkan Kode Laporan:</label>
-      <input type="text" id="kode" name="kode" value="<?= htmlspecialchars($kodeDicari) ?>" placeholder="Contoh: UNIMUS2025-001" required />
-      <button type="submit">Cek Sekarang</button>
-    </form>
+<div class="container">
+  <h2>Cek Status Laporan Anda</h2>
+  <form id="statusForm" method="post">
+    <label for="kode">Masukkan Kode Laporan:</label>
+    <input type="text" id="kode" name="kode" value="<?= htmlspecialchars($kodeDicari) ?>" placeholder="Contoh: UNIMUS2025-001" required />
+    <button type="submit">Cek Sekarang</button>
+  </form>
 
-    <?php if ($hasil): ?>
+  <?php if ($hasil): ?>
+    <div class="result">
+      <p><strong>Nama:</strong> <?= htmlspecialchars($hasil['nama_lengkap']) ?></p>
+      <p><strong>Email:</strong> <?= htmlspecialchars($hasil['email']) ?></p>
+      <p><strong>Jenis Laporan:</strong> <?= htmlspecialchars($hasil['kategori']) ?></p>
+      <p><strong>Isi Laporan:</strong> <?= htmlspecialchars($hasil['deskripsi']) ?></p>
+      <p><strong>Status:</strong> 
+        <span class="status 
+          <?= ($hasil['status'] == 'Selesai') ? 'done' : (($hasil['status'] == 'Sedang diproses') ? 'in-progress' : 'pending') ?>">
+          <?= htmlspecialchars($hasil['status']) ?>
+        </span>
+      </p>
+    </div>
+  <?php elseif (!empty($kodeDicari)): ?>
+    <p style="color:red; margin-top: 1rem;">Kode laporan tidak ditemukan. Pastikan kode benar.</p>
+  <?php endif; ?>
+</div>
+
+<div class="container">
+  <h2>Riwayat Laporan Anda</h2>
+  <div id="riwayatLaporan">
+    <p>Memuat riwayat...</p>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
+</footer>
+
+<script>
+  function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+  }
+
+  document.addEventListener("click", function(e) {
+    const dropdown = document.getElementById("dropdownMenu");
+    const icon = document.querySelector(".profile-icon");
+    if (!dropdown.contains(e.target) && !icon.contains(e.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+
+  function statusClass(status) {
+    if (status === "Selesai") return "done";
+    if (status === "Sedang diproses") return "in-progress";
+    return "pending";
+  }
+
+  async function tampilkanRiwayat() {
+    const nim = localStorage.getItem("nim");
+    if (!nim) {
+      document.getElementById("riwayatLaporan").innerHTML = "<p style='color:red;'>Tidak dapat mengambil NIM pengguna.</p>";
+      return;
+    }
+
+    const response = await fetch("get_riwayat.php?nim=" + nim);
+    const data = await response.json();
+
+    const container = document.getElementById("riwayatLaporan");
+
+    if (data.length === 0) {
+      container.innerHTML = "<p>Belum ada laporan yang dikirim.</p>";
+      return;
+    }
+
+    const listHTML = data.map(laporan => `
       <div class="result">
-        <p><strong>Nama:</strong> <?= htmlspecialchars($hasil['nama_lengkap']) ?></p>
-        <p><strong>Email:</strong> <?= htmlspecialchars($hasil['email']) ?></p>
-        <p><strong>Jenis Laporan:</strong> <?= htmlspecialchars($hasil['kategori']) ?></p>
-        <p><strong>Isi Laporan:</strong> <?= htmlspecialchars($hasil['deskripsi']) ?></p>
-        <p><strong>Status:</strong> 
-          <span class="status 
-            <?= ($hasil['status'] == 'Selesai') ? 'done' : (($hasil['status'] == 'Sedang diproses') ? 'in-progress' : 'pending') ?>">
-            <?= htmlspecialchars($hasil['status']) ?>
-          </span>
-        </p>
+        <p><strong>Kode Laporan:</strong> ${laporan.kode_laporan}</p>
+        <p><strong>Jenis:</strong> ${laporan.kategori}</p>
+        <p><strong>Isi:</strong> ${laporan.deskripsi}</p>
+        <p><strong>Status:</strong> <span class="status ${statusClass(laporan.status)}">${laporan.status}</span></p>
       </div>
-    <?php elseif (!empty($kodeDicari)): ?>
-      <p style="color:red; margin-top: 1rem;">Kode laporan tidak ditemukan. Pastikan kode benar.</p>
-    <?php endif; ?>
-  </div>
+    `).join("");
 
-  <div class="container">
-    <h2>Riwayat Laporan Anda</h2>
-    <div id="riwayatLaporan">
-      <p>Memuat riwayat...</p>
-    </div>
-  </div>
+    container.innerHTML = listHTML;
+  }
 
-  <footer>
-    &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
-  </footer>
+  window.onload = tampilkanRiwayat;
+</script>
 
-  <script>
-    function statusClass(status) {
-      if (status === "Selesai") return "done";
-      if (status === "Sedang diproses") return "in-progress";
-      return "pending";
-    }
-
-    async function tampilkanRiwayat() {
-      const nim = localStorage.getItem("nim");
-      if (!nim) {
-        document.getElementById("riwayatLaporan").innerHTML = "<p style='color:red;'>Tidak dapat mengambil NIM pengguna.</p>";
-        return;
-      }
-
-      const response = await fetch("get_riwayat.php?nim=" + nim);
-      const data = await response.json();
-
-      const container = document.getElementById("riwayatLaporan");
-
-      if (data.length === 0) {
-        container.innerHTML = "<p>Belum ada laporan yang dikirim.</p>";
-        return;
-      }
-
-      const listHTML = data.map(laporan => `
-        <div class="result">
-          <p><strong>Kode Laporan:</strong> ${laporan.kode_laporan}</p>
-          <p><strong>Jenis:</strong> ${laporan.kategori}</p>
-          <p><strong>Isi:</strong> ${laporan.deskripsi}</p>
-          <p><strong>Status:</strong> <span class="status ${statusClass(laporan.status)}">${laporan.status}</span></p>
-        </div>
-      `).join("");
-
-      container.innerHTML = listHTML;
-    }
-
-    window.onload = tampilkanRiwayat;
-  </script>
 </body>
 </html>
-
-

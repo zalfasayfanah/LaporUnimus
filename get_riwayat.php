@@ -1,5 +1,5 @@
 <?php
-$koneksi = mysqli_connect("localhost:3307", "root", "", "lapor_unimus");
+$koneksi = mysqli_connect("localhost", "root", "", "lapor_unimus");
 
 if (isset($_GET['nim'])) {
   $nim = $_GET['nim'];

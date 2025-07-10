@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,6 +7,72 @@
   <title>Bantuan - LaporUnimus</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="Bantuan.css" />
+  <style>
+    .profile-menu {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .profile-icon {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 999;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007e6a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .header-text {
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .logo {
+      position: absolute;
+      top: -4.2rem;
+      left: 3rem;
+      height: 230px;
+    }
+
+    .main-header {
+      background-color: #007e6a;
+      color: white;
+      padding: 3rem 2rem;
+      position: relative;
+    }
+  </style>
 </head>
 <body>
 
@@ -15,6 +82,12 @@
     <div class="header-text">
       <h1>LaporUnimus</h1>
       <p>Suara Mahasiswa, Aksi Nyata untuk Kampus Lebih Baik</p>
+    </div>
+    <div class="profile-menu">
+      <img src="profil.png" alt="Profil" class="profile-icon" onclick="toggleDropdown()" />
+      <div class="dropdown" id="dropdownMenu">
+        <a href="Logout.php">Logout</a>
+      </div>
     </div>
   </div>
 </header>
@@ -31,7 +104,6 @@
 <div class="container">
   <h2>FAQ & Bantuan</h2>
   <div class="accordion">
-    
     <div class="accordion-item">
       <div class="accordion-header" onclick="toggleAccordion(this)">
         🔒 Lupa NIM?
@@ -131,7 +203,6 @@
         Masuk ke akun Anda dan buka halaman "Riwayat Laporan" untuk melihat daftar laporan yang pernah Anda buat.
       </div>
     </div>
-
   </div>
 </div>
 
@@ -146,6 +217,19 @@
     content.classList.toggle("show");
     arrow.classList.toggle("rotate");
   }
+
+  function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+  }
+
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("dropdownMenu");
+    const icon = document.querySelector(".profile-icon");
+    if (!dropdown.contains(e.target) && !icon.contains(e.target)) {
+      dropdown.style.display = "none";
+    }
+  });
 </script>
 
 </body>
