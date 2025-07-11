@@ -23,28 +23,28 @@ $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim 
   <title>Admin - LaporUnimus</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background-color: #f5f9f8;
-  }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f9f8;
+      color: #333;
+    }
 
-  /* ===== HEADER & LOGO ===== */
-  header {
+    header {
       background-color: #007e6a;
       color: white;
       padding: 3rem 2rem;
       text-align: center;
+      position: relative;
     }
+
     .logo {
       position: absolute;
       top: -1.4rem;
       left: 3rem;
       height: 230px;
-    }
-
-    .header-container {
-      text-align: center;
     }
 
     .header-text h1 {
@@ -57,115 +57,91 @@ $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim 
       font-size: 1rem;
     }
 
-  /* ===== NAVIGASI (optional jika dipakai) ===== */
-  nav {
-    text-align: center;
-    margin: 1rem 0;
-  }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
 
-  nav a {
-    margin: 0 1rem;
-    text-decoration: none;
-    color: #007e6a;
-    font-weight: bold;
-  }
+    nav a {
+      text-decoration: none;
+      color: #007e6a;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
 
-  /* ===== KONTEN UTAMA ===== */
-  .container {
-    max-width: 95%;
-    margin: 2rem auto;
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  }
+    nav a:hover {
+      text-decoration: underline;
+    }
 
-  h2 {
-    color: #007e6a;
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
+    .container {
+      max-width: 95%;
+      margin: 2rem auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2rem;
-  }
+    h2 {
+      color: #007e6a;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
 
-  th, td {
-    border: 1px solid #ccc;
-    padding: 0.75rem;
-    text-align: left;
-    font-size: 0.95rem;
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
 
-  th {
-    background-color: #007e6a;
-    color: white;
-  }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      text-align: left;
+      font-size: 0.95rem;
+    }
 
-  img {
-    max-width: 100px;
-  }
+    th {
+      background-color: #007e6a;
+      color: white;
+    }
 
-  label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: bold;
-  }
+    img {
+      max-width: 100px;
+    }
 
-  input[type="text"] {
-    width: 100%;
-    padding: 0.8rem;
-    margin-top: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
+    select, button {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+    }
 
-  select, button {
-    padding: 0.5rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-family: 'Poppins', sans-serif;
-  }
+    button {
+      background-color: #007e6a;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-  button {
-    background-color: #007e6a;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+    button:hover {
+      background-color: #005f52;
+    }
 
-  button:hover {
-    background-color: #005f52;
-  }
+    .done { color: green; }
+    .in-progress { color: orange; }
+    .pending { color: red; }
 
-  .result {
-    margin-top: 2rem;
-    padding: 1rem;
-    border-radius: 8px;
-    background-color: #e6f7f4;
-    border-left: 5px solid #007e6a;
-  }
-
-  .status {
-    font-weight: bold;
-    margin-top: 0.5rem;
-  }
-
-  .done { color: green; }
-  .in-progress { color: orange; }
-  .pending { color: red; }
-
-  footer {
-    text-align: center;
-    margin-top: 3rem;
-    padding: 1rem;
-    color: #777;
-  }
-</style>
-
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 1rem;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
 
@@ -177,7 +153,10 @@ $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim 
   </div>
 </header>
 
-
+<nav>
+  <a href="AdminEditTentang.php">Edit Tentang</a>
+  <a href="admin.php">Kelola Laporan</a>
+</nav>
 
 <div class="container">
   <h2>Daftar Laporan Masuk</h2>
@@ -206,13 +185,12 @@ $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim 
           <td><?= $row['status'] ?? 'Belum diproses' ?></td>
           <td><?= date('d-m-Y H:i', strtotime($row['tanggal_kirim'])) ?></td>
           <td>
-  <?php if ($row['gambar']): ?>
-    <img src="uploads/<?= $row['gambar'] ?>" alt="Bukti" style="max-width: 120px; max-height: 80px; border-radius: 8px;" />
-  <?php else: ?>
-    <span style="color: #888;">(tidak ada)</span>
-  <?php endif; ?>
-</td>
-
+            <?php if ($row['gambar']) : ?>
+              <img src="uploads/<?= $row['gambar'] ?>" alt="Bukti" style="max-width: 120px; max-height: 80px; border-radius: 8px;" />
+            <?php else : ?>
+              <span style="color: #888;">(tidak ada)</span>
+            <?php endif; ?>
+          </td>
           <td>
             <form method="post" style="display:flex; gap: 0.5rem;">
               <input type="hidden" name="id_laporan" value="<?= $row['id_laporan'] ?>">

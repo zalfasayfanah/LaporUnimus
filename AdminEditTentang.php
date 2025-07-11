@@ -7,7 +7,6 @@ if (!$koneksi) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $konten = mysqli_real_escape_string($koneksi, $_POST['konten']);
     mysqli_query($koneksi, "UPDATE tentang SET konten = '$konten' WHERE id = 1");
-    $sukses = "🎉 Konten berhasil diperbarui!";
 }
 
 $result = mysqli_query($koneksi, "SELECT konten FROM tentang WHERE id = 1");
@@ -20,7 +19,7 @@ $konten = $data['konten'] ?? '';
 <head>
   <meta charset="UTF-8">
   <title>Edit Halaman Tentang</title>
-  <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+  <script src="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
     * {
@@ -28,79 +27,169 @@ $konten = $data['konten'] ?? '';
     }
     body {
       font-family: 'Poppins', sans-serif;
-      background: #f0f4f3;
+      background: #f4f9f8;
       color: #333;
-      padding: 2rem;
+      padding-bottom: 2rem;
     }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: white;
-      padding: 2rem 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.06);
-    }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #007e6a;
+
+    header {
+      background-color: #007e6a;
+      color: white;
+      padding: 3rem 2rem;
       text-align: center;
+      position: relative;
     }
-    textarea {
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 1rem;
+
+    .logo {
+      position: absolute;
+      top: -1.4rem;
+      left: 3rem;
+      height: 230px;
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .header-text p {
+      margin: 0;
       font-size: 1rem;
     }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #007e6a;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 95%;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      color: #007e6a;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      border-radius: 8px;
+      min-height: 300px;
+    }
+
     button {
       background-color: #007e6a;
       color: white;
-      padding: 0.7rem 1.5rem;
+      padding: 0.8rem 1.6rem;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      font-weight: 500;
+      font-size: 1rem;
+      font-weight: 600;
       margin-top: 1.5rem;
-      transition: background 0.3s;
+      transition: 0.3s;
     }
+
     button:hover {
-      background-color: #005f51;
+      background-color: #005f52;
     }
-    .sukses {
-      background-color: #e6f7f4;
-      color: #007e6a;
-      border-left: 6px solid #007e6a;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
+
+    .info {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      color: #555;
+      background: #f7fbfa;
+      padding: 0.8rem 1rem;
+      border-left: 4px solid #007e6a;
       border-radius: 8px;
     }
-    .toolbar-note {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 0.5rem;
+
+    .info ul {
+      margin: 0.5rem 0 0 1rem;
+      padding: 0;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 1rem;
+      color: #777;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Edit Halaman Tentang</h1>
-
-    <?php if (isset($sukses)) echo "<div class='sukses'>$sukses</div>"; ?>
-
-    <form method="post">
-      <textarea name="konten"><?= htmlspecialchars($konten) ?></textarea>
-      <button type="submit">💾 Simpan Perubahan</button>
-      <p class="toolbar-note">Gunakan toolbar CKEditor di atas untuk mengatur format teks, gambar, dan lainnya.</p>
-    </form>
+<header>
+  <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
+  <div class="header-text">
+    <h1>Panel Admin – LaporUnimus</h1>
+    <p>Kelola Halaman Tentang</p>
   </div>
+</header>
 
-  <script>
-    CKEDITOR.replace('konten', {
-      height: 350
-    });
-  </script>
+<nav>
+  <a href="AdminEditTentang.php">Edit Tentang</a>
+  <a href="admin.php">Kelola Laporan</a>
+</nav>
+
+<div class="container">
+  <h2>Edit Konten Halaman Tentang</h2>
+
+  <form method="post">
+    <textarea name="konten"><?= htmlspecialchars($konten) ?></textarea>
+    <button type="submit">💾 Simpan Perubahan</button>
+  </form>
+
+  <div class="info">
+    <strong>Tips Penggunaan Editor:</strong>
+    <ul>
+      <li>Gunakan tombol <strong>gambar</strong> 🖼️ untuk unggah foto dari komputer.</li>
+      <li>Gunakan alat <strong>rata kiri / kanan / tengah</strong> untuk atur posisi teks & gambar.</li>
+      <li>Gunakan <strong>heading</strong> (judul besar) agar konten lebih rapi.</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 LaporUnimus. Panel Admin.
+</footer>
+
+<script>
+  CKEDITOR.replace('konten', {
+    height: 400,
+    filebrowserUploadUrl: 'upload.php',
+    filebrowserUploadMethod: 'form',
+    removePlugins: 'elementspath',
+    resize_enabled: false,
+    toolbar: [
+      { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+      { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
+      { name: 'styles', items: [ 'Format' ] },
+      { name: 'insert', items: [ 'Image', 'Table' ] },
+      { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+      { name: 'tools', items: [ 'Maximize' ] }
+    ]
+  });
+</script>
 
 </body>
 </html>
