@@ -1,22 +1,42 @@
 <?php
 session_start();
 
+// Cek login
 if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
     echo "<script>alert('Silakan login terlebih dahulu.'); window.location.href = 'Login.php';</script>";
     exit;
 }
 
+// Koneksi ke database
 $koneksi = mysqli_connect("localhost", "root", "", "lapor_unimus");
+if (!$koneksi) {
+    die("Koneksi gagal: " . mysqli_connect_error());
+}
 
+$nama = $_SESSION['nama'];
+$nim = $_SESSION['nim'];
+
+// Ambil semua laporan user
+$queryAll = "SELECT * FROM laporan WHERE nama_lengkap = '$nama' AND nim = '$nim' ORDER BY tanggal_kirim DESC";
+$resultAll = mysqli_query($koneksi, $queryAll);
+
+$daftarLaporan = [];
+if ($resultAll && mysqli_num_rows($resultAll) > 0) {
+    while ($row = mysqli_fetch_assoc($resultAll)) {
+        $daftarLaporan[] = $row;
+    }
+}
+
+// Jika cari berdasarkan kode
 $hasil = null;
 $kodeDicari = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
-    $kodeDicari = mysqli_real_escape_string($koneksi, $_POST['kode']);
-    $query = "SELECT * FROM laporan WHERE kode_laporan = '$kodeDicari'";
-    $result = mysqli_query($koneksi, $query);
-    if (mysqli_num_rows($result) > 0) {
-        $hasil = mysqli_fetch_assoc($result);
+    $kodeDicari = trim(mysqli_real_escape_string($koneksi, $_POST['kode']));
+    $queryKode = "SELECT * FROM laporan WHERE kode_laporan = '$kodeDicari'";
+    $resultKode = mysqli_query($koneksi, $queryKode);
+    if ($resultKode && mysqli_num_rows($resultKode) > 0) {
+        $hasil = mysqli_fetch_assoc($resultKode);
     }
 }
 ?>
@@ -122,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
     }
 
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin: 2rem auto;
       background-color: white;
       padding: 2rem;
@@ -133,12 +153,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
     h2 {
       color: #007e6a;
       text-align: center;
+      margin-bottom: 1.5rem;
     }
 
     label {
+      font-weight: bold;
       display: block;
       margin-top: 1rem;
-      font-weight: bold;
     }
 
     input[type="text"] {
@@ -161,16 +182,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
       width: 100%;
       font-size: 1rem;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 12px rgba(0, 126, 106, 0.3);
+      background-color: #005f52;
     }
 
     .result {
-      margin-top: 2rem;
+      margin-bottom: 2rem;
       padding: 1rem;
       border-radius: 8px;
       background-color: #e6f7f4;
@@ -179,11 +198,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
 
     .status {
       font-weight: bold;
-      margin-top: 0.5rem;
-    }
-
-    .container + .container {
-      margin-top: 3rem;
     }
 
     .done { color: green; }
@@ -226,37 +240,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
   <a href="Tentang.php">Tentang</a>
 </nav>
 
+<!-- Form Cek Kode -->
 <div class="container">
-  <h2>Cek Status Laporan Anda</h2>
-  <form id="statusForm" method="post">
+  <h2>Cek Status Laporan via Kode</h2>
+  <form method="post">
     <label for="kode">Masukkan Kode Laporan:</label>
-    <input type="text" id="kode" name="kode" value="<?= htmlspecialchars($kodeDicari) ?>" placeholder="Contoh: UNIMUS2025-001" required />
-    <button type="submit">Cek Sekarang</button>
+    <input type="text" name="kode" id="kode" value="<?= htmlspecialchars($kodeDicari) ?>" placeholder="Contoh: UNIMUS2025-001" required />
+    <button type="submit">🔍 Cek Laporan</button>
   </form>
 
   <?php if ($hasil): ?>
     <div class="result">
       <p><strong>Nama:</strong> <?= htmlspecialchars($hasil['nama_lengkap']) ?></p>
       <p><strong>Email:</strong> <?= htmlspecialchars($hasil['email']) ?></p>
-      <p><strong>Jenis Laporan:</strong> <?= htmlspecialchars($hasil['kategori']) ?></p>
-      <p><strong>Isi Laporan:</strong> <?= htmlspecialchars($hasil['deskripsi']) ?></p>
+      <p><strong>Kategori:</strong> <?= htmlspecialchars($hasil['kategori']) ?></p>
+      <p><strong>Deskripsi:</strong> <?= htmlspecialchars($hasil['deskripsi']) ?></p>
       <p><strong>Status:</strong> 
-        <span class="status 
-          <?= ($hasil['status'] == 'Selesai') ? 'done' : (($hasil['status'] == 'Sedang diproses') ? 'in-progress' : 'pending') ?>">
+        <span class="status <?= ($hasil['status'] == 'Selesai') ? 'done' : (($hasil['status'] == 'Sedang diproses') ? 'in-progress' : 'pending') ?>">
           <?= htmlspecialchars($hasil['status']) ?>
         </span>
       </p>
     </div>
   <?php elseif (!empty($kodeDicari)): ?>
-    <p style="color:red; margin-top: 1rem;">Kode laporan tidak ditemukan. Pastikan kode benar.</p>
+    <p style="color:red; text-align:center;">Kode laporan tidak ditemukan. Pastikan kode benar.</p>
   <?php endif; ?>
 </div>
 
+<!-- Riwayat Laporan -->
 <div class="container">
   <h2>Riwayat Laporan Anda</h2>
-  <div id="riwayatLaporan">
-    <p>Memuat riwayat...</p>
-  </div>
+  <?php if (count($daftarLaporan) > 0): ?>
+    <?php foreach ($daftarLaporan as $laporan): ?>
+      <div class="result">
+        <p><strong>Kode:</strong> <?= htmlspecialchars($laporan['kode_laporan']) ?></p>
+        <p><strong>Kategori:</strong> <?= htmlspecialchars($laporan['kategori']) ?></p>
+        <p><strong>Deskripsi:</strong> <?= htmlspecialchars($laporan['deskripsi']) ?></p>
+        <p><strong>Status:</strong> 
+          <span class="status 
+            <?= ($laporan['status'] == 'Selesai') ? 'done' : (($laporan['status'] == 'Sedang diproses') ? 'in-progress' : 'pending') ?>">
+            <?= htmlspecialchars($laporan['status']) ?>
+          </span>
+        </p>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <p style="text-align:center;">Belum ada laporan yang Anda kirim.</p>
+  <?php endif; ?>
 </div>
 
 <footer>
@@ -276,43 +305,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode'])) {
       dropdown.style.display = "none";
     }
   });
-
-  function statusClass(status) {
-    if (status === "Selesai") return "done";
-    if (status === "Sedang diproses") return "in-progress";
-    return "pending";
-  }
-
-  async function tampilkanRiwayat() {
-    const nim = localStorage.getItem("nim");
-    if (!nim) {
-      document.getElementById("riwayatLaporan").innerHTML = "<p style='color:red;'>Tidak dapat mengambil NIM pengguna.</p>";
-      return;
-    }
-
-    const response = await fetch("get_riwayat.php?nim=" + nim);
-    const data = await response.json();
-
-    const container = document.getElementById("riwayatLaporan");
-
-    if (data.length === 0) {
-      container.innerHTML = "<p>Belum ada laporan yang dikirim.</p>";
-      return;
-    }
-
-    const listHTML = data.map(laporan => `
-      <div class="result">
-        <p><strong>Kode Laporan:</strong> ${laporan.kode_laporan}</p>
-        <p><strong>Jenis:</strong> ${laporan.kategori}</p>
-        <p><strong>Isi:</strong> ${laporan.deskripsi}</p>
-        <p><strong>Status:</strong> <span class="status ${statusClass(laporan.status)}">${laporan.status}</span></p>
-      </div>
-    `).join("");
-
-    container.innerHTML = listHTML;
-  }
-
-  window.onload = tampilkanRiwayat;
 </script>
 
 </body>
