@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
+    echo "<script>alert('Silakan login terlebih dahulu.'); window.location.href = 'Login.php';</script>";
+    exit;
+}
+
 $koneksi = mysqli_connect("localhost", "root", "", "lapor_unimus");
 if (!$koneksi) {
     die("Koneksi gagal: " . mysqli_connect_error());
@@ -15,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
 // Ambil semua laporan
 $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim DESC");
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -31,30 +37,81 @@ $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim 
       background: #f4f9f8;
       color: #333;
     }
-
     header {
       background-color: #007e6a;
       color: white;
-      padding: 3rem 2rem;
-      text-align: center;
+      padding: 1.5rem 2rem;
       position: relative;
+      overflow: visible; 
     }
-
+    .header-container {
+      display: flex;
+      align-items: center; 
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #007e6a;
+    }
     .logo {
-      position: absolute;
-      top: -1.4rem;
-      left: 3rem;
-      height: 230px;
+      height: 140px;
+      width: auto;
+      transform: scale(2.2); 
+      transform-origin: center left;
+      margin-right: 2rem;
     }
-
+    .header-text {
+      flex-grow: 1;
+      text-align: center;
+    }
     .header-text h1 {
       margin: 0;
       font-size: 2.5rem;
     }
-
     .header-text p {
       margin: 0;
       font-size: 1rem;
+    }
+
+    .profile-menu {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .profile-icon {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 999;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .logout-btn {
+      background: none;
+      border: none;
+      color: #007e6a;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .logout-btn:hover {
+      background-color: #f0f0f0;
     }
 
     nav {
@@ -146,10 +203,20 @@ $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim 
 <body>
 
 <header>
-  <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
-  <div class="header-text">
-    <h1>Panel Admin – LaporUnimus</h1>
-    <p>Kelola Laporan yang Masuk</p>
+  <div class="header-container">
+    <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
+    <div class="header-text">
+      <h1>Panel Admin – LaporUnimus</h1>
+      <p>Kelola Laporan yang Masuk</p>
+    </div>
+    <div class="profile-menu">
+      <img src="profil.png" alt="Profil" class="profile-icon" id="profileIcon" />
+      <div class="dropdown" id="dropdownMenu">
+        <form action="Logout.php" method="post" style="margin: 0;">
+          <button type="submit" class="logout-btn">Logout</button>
+        </form>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -211,6 +278,21 @@ $laporan = mysqli_query($koneksi, "SELECT * FROM laporan ORDER BY tanggal_kirim 
 <footer>
   &copy; 2025 LaporUnimus. Panel Admin.
 </footer>
+
+<script>
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+  profileIcon.addEventListener('click', () => {
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!profileIcon.contains(event.target) && !dropdownMenu.contains(event.target)) {
+      dropdownMenu.style.display = 'none';
+    }
+  });
+</script>
 
 </body>
 </html>
