@@ -10,6 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $result = mysqli_query($koneksi, "SELECT konten FROM tentang WHERE id = 1");
+
+if (!$result) {
+    die("Query gagal: " . mysqli_error($koneksi));
+}
+
+
 $data = mysqli_fetch_assoc($result);
 $konten = $data['konten'] ?? '';
 ?>
