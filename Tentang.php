@@ -2,7 +2,13 @@
 session_start();
 $koneksi = mysqli_connect("localhost", "root", "", "lapor_unimus");
 $tampil = mysqli_query($koneksi, "SELECT konten FROM tentang ORDER BY id DESC LIMIT 1");
+
+if (!$tampil) {
+    die("Query gagal: " . mysqli_error($koneksi));
+}
+
 $data = mysqli_fetch_assoc($tampil);
+
 ?>
 <!DOCTYPE html>
 <html lang="id">

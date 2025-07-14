@@ -21,6 +21,15 @@ if ($conn && !$conn->connect_error) {
 
     $queryProses = $conn->query("SELECT COUNT(*) AS proses FROM laporan WHERE status = 'Sedang diproses'");
     if ($queryProses) $laporanProses = $queryProses->fetch_assoc()['proses'];
+
+    // Ambil 6 laporan bergambar terbaru
+    $galeriLaporan = [];
+    $queryGaleri = $conn->query("SELECT deskripsi, gambar FROM laporan WHERE gambar IS NOT NULL AND gambar != '' ORDER BY tanggal_kirim DESC LIMIT 6");
+    if ($queryGaleri && $queryGaleri->num_rows > 0) {
+        while ($row = $queryGaleri->fetch_assoc()) {
+            $galeriLaporan[] = $row;
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -190,13 +199,7 @@ if ($conn && !$conn->connect_error) {
       min-width: 150px;
     }
 
-    .statistik .box:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-    }
-
-    .pengumuman, .kontak, .panduan, .alur-lapor, .testimoni, .progress, .partisipasi {
+    .pengumuman, .kontak, .panduan, .alur-lapor, .testimoni, .progress, .partisipasi, .galeri-laporan {
       margin-top: 2rem;
       text-align: center;
     }
@@ -225,6 +228,60 @@ if ($conn && !$conn->connect_error) {
       text-align: center;
       padding: 0.5rem;
     }
+
+    .galeri-laporan {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .galeri-laporan h3 {
+      margin-bottom: 1rem;
+      color: #007e6a;
+    }
+
+    .galeri-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .galeri-item {
+      background-color: #fff;
+      border: 2px solid #e0f2ef; /* FRAME */
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 126, 106, 0.1);
+      overflow: hidden;
+      padding: 1rem;
+      width: 100%;
+      max-width: 300px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      position: relative;
+    }
+    .galeri-item:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 12px 24px rgba(0, 126, 106, 0.2);
+      border-color: #00b798;
+    }
+    .galeri-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .galeri-item p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .no-galeri {
+      grid-column: 1 / -1;
+      color: #777;
+      font-style: italic;
+    }
+
 
     footer {
       margin-top: 3rem;
@@ -266,14 +323,14 @@ if ($conn && !$conn->connect_error) {
 
 <main>
 <section class="hero">
-  <h1>Selamat Datang, <?php echo htmlspecialchars($_SESSION['nama']); ?>!</h1>
+  <h1>Selamat Datang, <?= htmlspecialchars($_SESSION['nama']) ?>!</h1>
   <p>LaporUnimus adalah platform pengaduan infrastruktur dan pelayanan publik di Universitas Muhammadiyah Semarang. Laporkan keluhanmu dengan mudah, aman, dan transparan – demi kenyamanan bersama!</p>
   <a href="KirimLaporan.php" class="btn-lapor">Kirim Laporan</a>
 
   <div class="statistik">
-    <div class="box"><h2><?php echo $totalLaporan; ?></h2><p>Total Laporan</p></div>
-    <div class="box"><h2><?php echo $laporanSelesai; ?></h2><p>Selesai Diproses</p></div>
-    <div class="box"><h2><?php echo $laporanProses; ?></h2><p>Menunggu Tindak Lanjut</p></div>
+    <div class="box"><h2><?= $totalLaporan ?></h2><p>Total Laporan</p></div>
+    <div class="box"><h2><?= $laporanSelesai ?></h2><p>Selesai Diproses</p></div>
+    <div class="box"><h2><?= $laporanProses ?></h2><p>Menunggu Tindak Lanjut</p></div>
   </div>
 
   <div class="pengumuman">
@@ -283,12 +340,12 @@ if ($conn && !$conn->connect_error) {
 
   <div class="kontak">
     <h3>📞 Kontak Dukungan</h3>
-    <p>Butuh bantuan? Hubungi kami via WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
+    <p>Hubungi via WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
   </div>
 
   <div class="panduan">
     <h3>📘 Panduan Penggunaan</h3>
-    <p>Lihat panduan lengkap cara menggunakan LaporUnimus <a href="https://drive.google.com/file/d/1FS2kDK5z3saRqiDAudhyNJ3gcF5cUTRe/view?usp=sharing" target="_blank" rel="noopener noreferrer">di sini</a>.</p>
+    <p>Lihat panduan lengkap <a href="https://drive.google.com/file/d/1FS2kDK5z3saRqiDAudhyNJ3gcF5cUTRe/view?usp=sharing" target="_blank">di sini</a>.</p>
   </div>
 
   <div class="alur-lapor">
@@ -314,8 +371,24 @@ if ($conn && !$conn->connect_error) {
 
   <div class="partisipasi">
     <h3>💪 Ayo Jadi Bagian dari Perubahan Positif!</h3>
-    <p>Mahasiswa aktif = kampus berkembang! Yuk, sampaikan aspirasimu lewat LaporUnimus dan bantu ciptakan lingkungan kampus yang lebih baik, bersih, dan nyaman untuk kita semua!</p>
+    <p>Mahasiswa aktif = kampus berkembang! Yuk, sampaikan aspirasimu lewat LaporUnimus dan bantu ciptakan lingkungan kampus yang lebih baik!</p>
     <a href="KirimLaporan.php" class="btn-lapor" style="background-color: #fff; color: #007e6a;">Laporkan Sekarang</a>
+  </div>
+
+  <!-- GALERI -->
+  <div class="galeri-laporan">
+    <h3>🖼️ Galeri Laporan Terbaru</h3>
+    <div class="galeri-grid">
+      <?php foreach ($galeriLaporan as $laporan): ?>
+        <div class="galeri-item">
+          <img src="uploads/<?= htmlspecialchars($laporan['gambar']) ?>" alt="Laporan" />
+          <p><?= htmlspecialchars($laporan['deskripsi']) ?></p>
+        </div>
+      <?php endforeach; ?>
+      <?php if (empty($galeriLaporan)): ?>
+        <p style="text-align:center; color:gray;">Belum ada laporan bergambar.</p>
+      <?php endif; ?>
+    </div>
   </div>
 </section>
 </main>

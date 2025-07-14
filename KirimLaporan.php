@@ -35,15 +35,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Proses upload gambar jika ada
     $gambar_nama = null;
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
-        $target_dir = "uploads/";
-        if (!file_exists($target_dir)) {
-            mkdir($target_dir, 0755, true);
-        }
-
-        $gambar_nama = $kode_laporan . "_" . basename($_FILES["gambar"]["name"]);
-        $target_file = $target_dir . $gambar_nama;
-        move_uploaded_file($_FILES["gambar"]["tmp_name"], $target_file);
+    $target_dir = "uploads/";
+    if (!file_exists($target_dir)) {
+        mkdir($target_dir, 0755, true);
     }
+
+    $gambar_nama = $kode_laporan . "_" . basename($_FILES["gambar"]["name"]);
+    $target_file = $target_dir . $gambar_nama;
+
+    if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $target_file)) {
+        echo "Upload berhasil!";
+    } else {
+        echo "Upload gagal!";
+        var_dump($_FILES["gambar"]);
+    }
+}
+
 
     // Simpan ke database
     $sql = "INSERT INTO laporan (nim, kode_laporan, nama_lengkap, email, kategori, deskripsi, gambar, tanggal_kirim, status)
