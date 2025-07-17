@@ -220,23 +220,7 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
     </div>
   </div>
 
-  <div class="profile-settings">
-    <h3>⚙️ Pengaturan Akun</h3>
-
-    <div class="setting-item">
-      <strong>Jurusan:</strong> Teknik Informatika
-    </div>
-    <div class="setting-item">
-      <strong>Fakultas:</strong> Fakultas Teknik
-    </div>
-
-    <div class="setting-actions">
-      <button onclick="alert('Fitur ubah profil akan tersedia nanti')">Ubah Profil</button>
-      <button onclick="alert('Fitur ganti password akan tersedia nanti')">Ganti Password</button>
-    </div>
-  </div>
-</div>
-
+  
 <footer>
   &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
 </footer>
