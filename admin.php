@@ -4,7 +4,6 @@ if (!$koneksi) {
     die("Koneksi gagal: " . mysqli_connect_error());
 }
 
-// Proses update status jika ada
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     $id = $_POST['id_laporan'];
     $status_baru = $_POST['status'];
@@ -12,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     mysqli_query($koneksi, $query);
 }
 
-// Ambil semua kategori unik
 $kategori_result = mysqli_query($koneksi, "SELECT DISTINCT kategori FROM laporan ORDER BY kategori ASC");
 ?>
 
@@ -37,15 +35,30 @@ $kategori_result = mysqli_query($koneksi, "SELECT DISTINCT kategori FROM laporan
       background-color: #007e6a;
       color: white;
       padding: 3rem 2rem;
-      text-align: center;
+      position: relative;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       position: relative;
     }
 
     .logo {
       position: absolute;
-      top: -1.4rem;
-      left: 3rem;
-      height: 230px;
+      top: -3.5rem;
+      left: 1.5rem;
+      height: 220px;
+      width: 220px;
+      object-fit: contain;
+      aspect-ratio: 1 / 1;
+    }
+    
+
+    .header-text {
+      text-align: center;
+      flex-grow: 1;
     }
 
     .header-text h1 {
@@ -56,6 +69,46 @@ $kategori_result = mysqli_query($koneksi, "SELECT DISTINCT kategori FROM laporan
     .header-text p {
       margin: 0;
       font-size: 1rem;
+    }
+
+    .profile-menu {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .profile-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+      object-fit: cover;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 999;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007e6a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #f0f0f0;
     }
 
     nav {
@@ -139,15 +192,37 @@ $kategori_result = mysqli_query($koneksi, "SELECT DISTINCT kategori FROM laporan
       color: #777;
     }
   </style>
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById("dropdownMenu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.profile-icon')) {
+        const dropdown = document.getElementById("dropdownMenu");
+        if (dropdown && dropdown.style.display === "block") {
+          dropdown.style.display = "none";
+        }
+      }
+    }
+  </script>
 </head>
 <body>
 
-<!-- === HEADER YANG DISAMAKAN === -->
 <header>
-  <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
-  <div class="header-text">
-    <h1>Panel Admin – LaporUnimus</h1>
-    <p>Kelola Laporan yang Masuk</p>
+  <div class="header-container">
+    <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
+    <div class="header-text">
+      <h1>Panel Admin – LaporUnimus</h1>
+      <p>Kelola Laporan yang Masuk</p>
+    </div>
+    <div class="profile-menu">
+      <img src="profil.png" alt="Profil" class="profile-icon" onclick="toggleDropdown()" />
+      <div class="dropdown" id="dropdownMenu">
+        <a href="Logout.php">Logout</a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -155,7 +230,6 @@ $kategori_result = mysqli_query($koneksi, "SELECT DISTINCT kategori FROM laporan
   <a href="AdminEditTentang.php">Edit Tentang</a>
   <a href="admin.php">Kelola Laporan</a>
 </nav>
-<!-- ============================= -->
 
 <?php while ($kategori = mysqli_fetch_assoc($kategori_result)) :
     $nama_kategori = $kategori['kategori'];

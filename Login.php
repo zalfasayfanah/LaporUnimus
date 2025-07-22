@@ -38,14 +38,14 @@ session_start();
   <?php
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $nama = $_POST['nama'];
-      $nim = strtoupper(trim($_POST['nim'])); // pastikan huruf besar
+      $nim = strtoupper(trim($_POST['nim'])); // Pastikan huruf besar, untuk konsistensi
 
       // Simpan ke session
       $_SESSION['nama'] = $nama;
       $_SESSION['nim'] = $nim;
 
-      // Redirect ke laman sesuai peran
-      if (strpos($nim, 'ADM') === 0) {
+      // Jika NIM = admin123 (tanpa memandang huruf besar/kecil)
+      if (strtolower($nim) === 'admin123') {
           echo "<script>window.location.href = 'admin.php';</script>";
       } else {
           echo "<script>window.location.href = 'LamanAwal.php';</script>";
