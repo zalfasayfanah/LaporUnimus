@@ -89,8 +89,8 @@ if ($conn && !$conn->connect_error) {
     }
 
     .profile-icon {
-      width: 85px;
-      height: 85px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       border: 2px solid white;
       cursor: pointer;

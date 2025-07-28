@@ -10,12 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $result = mysqli_query($koneksi, "SELECT konten FROM tentang WHERE id = 1");
-
 if (!$result) {
     die("Query gagal: " . mysqli_error($koneksi));
 }
-
-
 $data = mysqli_fetch_assoc($result);
 $konten = $data['konten'] ?? '';
 ?>
@@ -23,14 +20,16 @@ $konten = $data['konten'] ?? '';
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Edit Halaman Tentang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <script src="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
   <style>
     * {
       margin: 0; padding: 0; box-sizing: border-box;
     }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: #f4f9f8;
@@ -38,29 +37,69 @@ $konten = $data['konten'] ?? '';
       padding-bottom: 2rem;
     }
 
-    header {
+    .main-header {
       background-color: #007e6a;
       color: white;
       padding: 3rem 2rem;
-      text-align: center;
       position: relative;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .header-text {
+      text-align: center;
+      flex-grow: 1;
     }
 
     .logo {
       position: absolute;
-      top: -1.4rem;
+      top: -4rem;
       left: 3rem;
       height: 230px;
     }
 
-    .header-text h1 {
-      margin: 0;
-      font-size: 2.5rem;
+    .profile-menu {
+      position: relative;
+      z-index: 1000;
     }
 
-    .header-text p {
-      margin: 0;
-      font-size: 1rem;
+    .profile-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 999;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007e6a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #f0f0f0;
     }
 
     nav {
@@ -144,11 +183,19 @@ $konten = $data['konten'] ?? '';
 </head>
 <body>
 
-<header>
-  <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
-  <div class="header-text">
-    <h1>Panel Admin – LaporUnimus</h1>
-    <p>Kelola Halaman Tentang</p>
+<header class="main-header">
+  <div class="header-container">
+    <img src="Logo1.png" alt="Logo Lapor Unimus" class="logo" />
+    <div class="header-text">
+      <h1>Panel Admin – LaporUnimus</h1>
+      <p>Kelola Halaman Tentang</p>
+    </div>
+    <div class="profile-menu">
+      <img src="profil.png" alt="Profil" class="profile-icon" onclick="toggleDropdown()" />
+      <div class="dropdown" id="dropdownMenu">
+        <a href="Logout.php">Logout</a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -180,6 +227,18 @@ $konten = $data['konten'] ?? '';
 </footer>
 
 <script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  window.addEventListener('click', function(e) {
+    const menu = document.getElementById('dropdownMenu');
+    if (!e.target.closest('.profile-menu')) {
+      menu.style.display = 'none';
+    }
+  });
+
   CKEDITOR.replace('konten', {
     height: 400,
     filebrowserUploadUrl: 'upload.php',

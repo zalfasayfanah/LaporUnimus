@@ -52,8 +52,8 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
     }
 
     .profile-icon {
-      width: 85px;
-      height: 85px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       border: 2px solid white;
       cursor: pointer;
@@ -87,7 +87,7 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
 
     nav.main-nav {
       text-align: center;
-      background-color: transparent; /* Strip hijau muda dihilangkan */
+      background-color: transparent;
       padding: 0.0rem 0;
     }
 
@@ -129,44 +129,49 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
       margin-bottom: 2rem;
     }
 
-    .recent-activity {
+    .profile-box {
+      background-color: #e6f7f4;
+      border: 1px solid #b3e0d3;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: inline-block;
+      text-align: left;
+    }
+
+    .profile-settings {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .profile-settings h3 {
+      color: #007e6a;
+      margin-bottom: 1.5rem;
+    }
+
+    .setting-item {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .setting-actions {
       margin-top: 2rem;
     }
 
-    .recent-activity h3 {
-      color: #007e6a;
-      text-align: center;
-      margin-bottom: 1rem;
+    .setting-actions button {
+      background-color: #007e6a;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      margin: 0 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
     }
 
-    .activity-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 auto;
-      max-width: 600px;
-    }
-
-    .activity-list li {
-      background-color: #e6f7f4;
-      border: 1px solid #b3e0d3;
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border-radius: 10px;
-      font-size: 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .activity-list li span {
-      font-size: 1.2rem;
-      margin-right: 0.5rem;
-    }
-
-    .activity-list li small {
-      display: block;
-      color: #555;
-      font-size: 0.85rem;
-      margin-top: 0.3rem;
-      text-align: right;
+    .setting-actions button:hover {
+      background-color: #005f51;
     }
 
     footer {
@@ -208,29 +213,14 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
   <img src="profil.png" alt="Foto Profil" class="profile-pic" id="fotoProfil" />
 
   <div class="profile-info">
-    <p><strong>Nama:</strong> <?= htmlspecialchars($_SESSION['nama']) ?></p>
-    <p><strong>NIM:</strong> <?= htmlspecialchars($_SESSION['nim']) ?></p>
+    <div class="profile-box">
+      <p><strong>👤 Nama:</strong> <?= htmlspecialchars($_SESSION['nama']) ?></p>
+      <p><strong>🎓 NIM:</strong> <?= htmlspecialchars($_SESSION['nim']) ?></p>
+      <p><strong>✅ Status Mahasiswa:</strong> Aktif</p>
+    </div>
   </div>
 
-  <div class="recent-activity">
-    <h3>📌 Aktivitas Terakhir</h3>
-    <ul class="activity-list">
-      <li>
-        <span>📝</span> Laporan tentang kebersihan toilet
-        <small>12 April 2025</small>
-      </li>
-      <li>
-        <span>📸</span> Unggah foto kerusakan AC di ruang kuliah A3
-        <small>5 April 2025</small>
-      </li>
-      <li>
-        <span>✅</span> Laporan "Kursi Rusak" telah diselesaikan
-        <small>30 Maret 2025</small>
-      </li>
-    </ul>
-  </div>
-</div>
-
+  
 <footer>
   &copy; 2025 LaporUnimus. Dibuat oleh Tim Mahasiswa Unimus.
 </footer>
