@@ -8,7 +8,7 @@ if (!isset($_SESSION['nama']) || !isset($_SESSION['nim'])) {
 }
 
 // Koneksi ke database
-$koneksi = mysqli_connect("localhost", "root", "", "lapor_unimus");
+$koneksi = mysqli_connect("localhost:3307", "root", "", "lapor_unimus");
 if (!$koneksi) {
     die("Koneksi gagal: " . mysqli_connect_error());
 }
@@ -17,7 +17,7 @@ $nama = $_SESSION['nama'];
 $nim = $_SESSION['nim'];
 
 // Ambil semua laporan user
-$queryAll = "SELECT * FROM laporan WHERE nama_lengkap = '$nama' AND nim = '$nim' ORDER BY tanggal_kirim DESC";
+$queryAll = "SELECT * FROM laporan WHERE nim = '$nim' ORDER BY tanggal_kirim DESC";
 $resultAll = mysqli_query($koneksi, $queryAll);
 
 $daftarLaporan = [];

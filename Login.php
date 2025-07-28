@@ -44,12 +44,13 @@ session_start();
       $_SESSION['nama'] = $nama;
       $_SESSION['nim'] = $nim;
 
-      // Jika NIM = admin123 (tanpa memandang huruf besar/kecil)
-      if (strtolower($nim) === 'admin123') {
-          echo "<script>window.location.href = 'admin.php';</script>";
+      // Jika NIM diawali dengan 'ADM' (huruf besar atau kecil)
+      if (stripos($nim, 'ADM') === 0) {
+        echo "<script>window.location.href = 'admin.php';</script>";
       } else {
-          echo "<script>window.location.href = 'LamanAwal.php';</script>";
+        echo "<script>window.location.href = 'LamanAwal.php';</script>";
       }
+
       exit;
   }
   ?>
